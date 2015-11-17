@@ -46,7 +46,7 @@ public class Tetris extends Applet {
 		new Color(0x0099CC), // sky blue
 		new Color(0x9966CC), // lavender
 	};
-	private final static Color BACKGROUND_COLOR = new Color(0x99FFCC);
+	private final static Color BACKGROUND_COLOR = new Color(0x1B4F08);
 
 	//   *    **   *    *    *    *
 	//   *    *    *    **   **   **   **
