@@ -6,9 +6,9 @@ import java.awt.event.WindowEvent;
 
 import tetris.Tetris;
 
-public class TetrisFrame extends Frame{
+public class SoloFrame extends Frame{
 	
-	public TetrisFrame() {
+	public SoloFrame() {
 		Tetris tetris = new Tetris();
 		this.setTitle("Tetris - Solo Mode ");
 		this.setLocation(200, 200);

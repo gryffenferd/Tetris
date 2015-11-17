@@ -47,7 +47,7 @@ public class Frame extends JFrame implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		TetrisFrame tetris = new TetrisFrame();
+		SoloFrame tetris = new SoloFrame();
 		this.setVisible(false);
 	}
 }
