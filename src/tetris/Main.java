@@ -10,7 +10,7 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		Frame frame = new Frame("Tetris");
+		/*Frame frame = new Frame("Tetris");
 		Tetris tetris = new Tetris();
 		frame.add(tetris);
 		tetris.init();
@@ -24,7 +24,8 @@ public class Main {
 
 		frame.setSize(750, 441);
 		frame.setResizable(false);
-		frame.setVisible(true);
+		frame.setVisible(true);*/
+		TetrisMulti t = new TetrisMulti();
 	}
 	
 }
