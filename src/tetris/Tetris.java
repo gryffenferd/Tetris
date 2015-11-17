@@ -123,7 +123,7 @@ public class Tetris extends Applet {
 	private Timer timer;
 	private TetrisPiece cur_piece;
 	private TetrisPiece next_piece = randomPiece();
-	private TetrisSound sounds;// = new TetrisSound(this);
+	private TetrisSound sounds;
 	private TetrisLabel rows_deleted_label = new TetrisLabel("0");
 	private TetrisLabel level_label = new TetrisLabel("1");
 	private TetrisLabel score_label = new TetrisLabel("0");
