@@ -6,7 +6,7 @@ Projet PlateformeJava 3A
 
 Le but est de créer un jeu Tetris 1 joueur et 2 joueurs en ligne ou en local.
 
-Pour le lancer: lancer l'application Tetris.
+**Pour le lancer** : Lancer l'application Tetris.
 
 Observation:
 * Changer les couleurs
