@@ -1,9 +1,11 @@
-package tetris;
+package gui;
 
 import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
+import tetris.Tetris;
 
 public class TetrisMulti{
 	
