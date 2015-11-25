@@ -1,12 +1,9 @@
 package tetris;
 
-import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 
 public class TetrisMulti{
 	
