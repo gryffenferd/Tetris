@@ -9,7 +9,7 @@ import tetris.Tetris;
 
 public class TetrisMulti{
 	
-	TetrisMulti(){
+	public TetrisMulti(){
 		Frame frame = new Frame("TetrisMulti");
 		frame.setLayout(new GridLayout(0, 2));
 		Tetris t1 = new Tetris();
@@ -22,6 +22,7 @@ public class TetrisMulti{
 		t2.resize(750,400);
 		frame.add(t1,0);
 		frame.add(t2,1);
+		
 		
 		
 		frame.setSize(1500,880);

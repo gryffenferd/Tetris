@@ -128,8 +128,8 @@ public class Tetris extends Applet {
 	private TetrisLabel level_label = new TetrisLabel("1");
 	private TetrisLabel score_label = new TetrisLabel("0");
 	private TetrisLabel high_score_label = new TetrisLabel("");
-	final Button start_newgame_butt = new TetrisButton("Start");
-	final Button pause_resume_butt = new TetrisButton("Pause");									
+	public final Button start_newgame_butt = new TetrisButton("Start");
+	public final Button pause_resume_butt = new TetrisButton("Pause");									
 	
 	//
 	// INNER CLASSES
