@@ -1,21 +1,29 @@
 package server;
 
+import java.nio.channels.Selector;
+import java.nio.channels.ServerSocketChannel;
 
-import java.io.IOException;
-import java.net.ServerSocket;
-public class ServerTetris {
+public class ServerTetris implements Runnable{
 
-	public static ServerSocket ss = null;
-	public static Thread t;
+	public static final int DEFAULT_PORT = 5555;
 	
-	public static void main(String[] args) {
-		
-		try{
-			ss = new ServerSocket(5555);
-			System.out.println("Le serveur est à l'écoute du port "+ss.getLocalPort());
-			
-				
-		}catch(IOException e){e.printStackTrace();}
+	private Selector selector;
+	private ServerSocketChannel server;
+	private final int port;
+	
+	public ServerTetris(){
+		this(DEFAULT_PORT);
 	}
+	
+	public ServerTetris(int port){
+		this.port = port;
+	}
+	
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
+	
 
 }
