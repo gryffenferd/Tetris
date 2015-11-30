@@ -27,7 +27,8 @@ public class Nio_Server implements Runnable{
 					sBuffer.append(charSet.decode(buffer));
 					buffer.clear();
 				}
-				System.out.println("server receives ->" + sBuffer);
+				
+				System.out.println("server receives ->" + sBuffer);			
 				client.close();
 		}			
 		}catch(Exception e) {e.printStackTrace();}

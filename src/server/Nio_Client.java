@@ -13,7 +13,7 @@ public class Nio_Client implements Runnable{
 	@Override
 	public void run() {
 		try{
-			Charset charSet = Charset.forName("UI-ASCII");
+			Charset charSet = Charset.forName("US-ASCII");
 			SocketChannel socket = SocketChannel.open(new InetSocketAddress("localhost",5555));
 			
 			BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in));
@@ -21,10 +21,10 @@ public class Nio_Client implements Runnable{
 			String strSend = keyboard.readLine();
 			
 			socket.write(charSet.encode(CharBuffer.wrap(strSend)));
+			
 			socket.close();
 			
 		}catch(IOException e) {e.printStackTrace();}
 		
 	}
-
 }
