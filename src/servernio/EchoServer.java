@@ -13,7 +13,7 @@ import java.nio.charset.CharsetDecoder;
 import java.util.Iterator;
 
 public class EchoServer {
-	public static final int DEFAULT_PORT = 8189;
+	public static final int DEFAULT_PORT = 5555;
 	private Selector selector;
 	private ServerSocketChannel server;
 	private final int port;
