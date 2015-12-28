@@ -1,5 +1,7 @@
 package servernio;
 
+import gui.SoloFrame;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
