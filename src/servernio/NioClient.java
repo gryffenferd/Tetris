@@ -10,6 +10,8 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.nio.channels.spi.SelectorProvider;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -115,7 +117,7 @@ public class NioClient implements Runnable {
 			}
 		}
 	}
-
+	
 	private void read(SelectionKey key) throws IOException {
 		SocketChannel socketChannel = (SocketChannel) key.channel();
 
@@ -241,6 +243,9 @@ public class NioClient implements Runnable {
 			t.setDaemon(true);
 			t.start();
 			RspHandler handler = new RspHandler();
+			
+			Thread tetris = new Thread();
+			
 			
 			String strSend = "";
 			while (!strSend.equals("quit")) {
