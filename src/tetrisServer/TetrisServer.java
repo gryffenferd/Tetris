@@ -8,7 +8,7 @@ If you use it in a mission critical application and
 a bug in this code causes a global nuclear war, I will
 take full responsibility and will fix the bug for free.
 */
-package tetris;
+package tetrisServer;
 
 import java.awt.*;
 import java.applet.*;
@@ -17,9 +17,7 @@ import java.util.Random;
 import java.net.URL;
 import java.net.MalformedURLException;
 
-import tetris.DoubleBufferedCanvas;
-
-public class Tetris extends Applet {
+public class TetrisServer extends Applet {
 	
 	//
 	// STATIC MEMBERS
@@ -344,7 +342,7 @@ public class Tetris extends Applet {
 	 * 												*
 	 ************************************************/	
 
-	private class GridCanvas extends DoubleBufferedCanvas {
+	private class GridCanvas extends DoubleBufferedCanvasServer {
 		private int grid[][];
 		private boolean paint_background;
 		public GridCanvas(int[][] grid, boolean do_background) {
