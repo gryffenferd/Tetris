@@ -80,13 +80,14 @@ public class EchoServer {
 		String msg = this.readMessage(socket);
 		if (msg.length() <= 0)
 			return;
+		/* Pour quitter */
 		if (msg.trim().equals("quit"))
 			socket.close();
+		/* Demande la prochaine pièce */
 		if (msg.trim().equals("rand")){
 			Random random = new Random();
 			int rand = Math.abs(random.nextInt());
 			this.writeMessage(socket,Integer.toString(rand));
-			System.out.println("Rand: " + rand);
 		}
 		else if (msg.length() > 0) {
 

@@ -22,7 +22,6 @@ public class RspHandler {
 			System.out.println(new String(this.rsp));
 		else{
 			setRand(Integer.parseInt(new String(this.rsp)));
-			System.out.println("Rand 2 : -> " + Integer.parseInt(new String(this.rsp)));
 		}
 	}
 
