@@ -13,6 +13,7 @@ import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.util.Iterator;
+import java.util.Random;
 
 public class EchoServer {
 	public static final int DEFAULT_PORT = 5555;
@@ -81,6 +82,12 @@ public class EchoServer {
 			return;
 		if (msg.trim().equals("quit"))
 			socket.close();
+		if (msg.trim().equals("rand")){
+			Random random = new Random();
+			int rand = Math.abs(random.nextInt());
+			this.writeMessage(socket,Integer.toString(rand));
+			System.out.println("Rand: " + rand);
+		}
 		else if (msg.length() > 0) {
 
 			System.out.println("key is " + evt + " -> " + msg.trim());

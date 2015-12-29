@@ -13,9 +13,10 @@ package tetris;
 import java.awt.*;
 import java.applet.*;
 import java.awt.event.*;
-import java.util.Random;
 import java.net.URL;
 import java.net.MalformedURLException;
+
+import servernio.NioClient;
 
 
 public class TetrisServer extends Applet {
@@ -97,7 +98,6 @@ public class TetrisServer extends Applet {
 		},
 	};
 	private static boolean tmp_grid[][] = new boolean[4][4]; // scratch space
-	private static Random random = new Random();
 	
 	private static class TetrisLabel extends Label {
 		private final static Font LABEL_FONT = new Font("Serif", Font.BOLD, 18);
@@ -113,7 +113,6 @@ public class TetrisServer extends Applet {
 	//
 	// INSTANCE DATA
 	//
-		
 	private int grid[][] = new int[ROWS][COLUMNS];
 	private int next_piece_grid[][] = new int[4][4];
 	private int num_rows_deleted = 0;
@@ -458,6 +457,7 @@ public class TetrisServer extends Applet {
 			soundTrack.stop();
 		}
 	}
+
 	/************************************************
 	 * 												*
 	 * 				END TETRISTIMER CLASS			*
@@ -474,7 +474,7 @@ public class TetrisServer extends Applet {
  * 
  */
 	private TetrisPiece randomPiece() {
-		int rand = Math.abs(random.nextInt());
+		int rand = NioClient.newRand();
 		return new TetrisPiece(rand % (PIECE_COLORS.length));
 	}
 	

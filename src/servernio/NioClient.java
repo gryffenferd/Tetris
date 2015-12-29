@@ -12,6 +12,7 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.nio.channels.spi.SelectorProvider;
+import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class NioClient implements Runnable {
 	// The host:port combination to connect to
@@ -119,7 +121,7 @@ public class NioClient implements Runnable {
 			}
 		}
 	}
-	
+
 	private void read(SelectionKey key) throws IOException {
 		SocketChannel socketChannel = (SocketChannel) key.channel();
 
@@ -238,18 +240,22 @@ public class NioClient implements Runnable {
 		return SelectorProvider.provider().openSelector();
 	}
 
+	private static NioClient thisClient;
+
 	public static void main(String[] args) {
 		try {
 			NioClient client = new NioClient(InetAddress.getLocalHost(), 5555);
+			thisClient = client;
 			Thread t = new Thread(client);
 			t.setDaemon(true);
 			t.start();
 			RspHandler handler = new RspHandler();
-			
+
 			MultiOnlineFrame tetris = new MultiOnlineFrame();
+			tetris.setRand();
 			Thread threadTetris = new Thread(tetris);
-			threadTetris.start();			
-			
+			threadTetris.start();
+
 			String strSend = "";
 			while (!strSend.equals("quit")) {
 				BufferedReader keyboard = new BufferedReader(
@@ -263,5 +269,18 @@ public class NioClient implements Runnable {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static int newRand() {
+		RspHandler handler = new RspHandler();
+		String msg = "rand";
+		try {
+			thisClient.send(msg.getBytes(), handler);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		handler.waitForResponse();
+		return handler.getRand();
 	}
 }

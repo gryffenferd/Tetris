@@ -2,6 +2,7 @@ package servernio;
 
 public class RspHandler {
 	private byte[] rsp = null;
+	private int rand;
 	
 	public synchronized boolean handleResponse(byte[] rsp) {
 		this.rsp = rsp;
@@ -17,6 +18,19 @@ public class RspHandler {
 			}
 		}
 		
-		System.out.println(new String(this.rsp));
+		if(rsp.getClass().equals(String.class))
+			System.out.println(new String(this.rsp));
+		else{
+			setRand(Integer.parseInt(new String(this.rsp)));
+			System.out.println("Rand 2 : -> " + Integer.parseInt(new String(this.rsp)));
+		}
+	}
+
+	public int getRand() {
+		return rand;
+	}
+	
+	public void setRand(int rand){
+		this.rand = rand;
 	}
 }
