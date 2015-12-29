@@ -1,5 +1,7 @@
 package servernio;
 
+import gui.MultiOnlineFrame;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -244,8 +246,9 @@ public class NioClient implements Runnable {
 			t.start();
 			RspHandler handler = new RspHandler();
 			
-			Thread tetris = new Thread();
-			
+			MultiOnlineFrame tetris = new MultiOnlineFrame();
+			Thread threadTetris = new Thread(tetris);
+			threadTetris.start();			
 			
 			String strSend = "";
 			while (!strSend.equals("quit")) {

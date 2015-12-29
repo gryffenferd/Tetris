@@ -1,4 +1,4 @@
-package tetrisServer;
+package tetris;
 
 import java.io.DataInputStream;
 import java.io.File;

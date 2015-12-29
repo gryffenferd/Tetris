@@ -8,7 +8,7 @@ If you use it in a mission critical application and
 a bug in this code causes a global nuclear war, I will
 take full responsibility and will fix the bug for free.
 */
-package tetrisServer;
+package tetris;
 
 import java.awt.*;
 import java.applet.*;
@@ -16,6 +16,7 @@ import java.awt.event.*;
 import java.util.Random;
 import java.net.URL;
 import java.net.MalformedURLException;
+
 
 public class TetrisServer extends Applet {
 	

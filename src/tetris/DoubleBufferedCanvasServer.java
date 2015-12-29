@@ -1,4 +1,4 @@
-package tetrisServer;
+package tetris;
 
 import java.awt.Canvas;
 import java.awt.Dimension;

@@ -1,4 +1,4 @@
-ackage gui;
+package gui;
 
 import java.awt.Frame;
 import java.awt.GridLayout;
