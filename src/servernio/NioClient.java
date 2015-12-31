@@ -240,7 +240,7 @@ public class NioClient implements Runnable {
 		return SelectorProvider.provider().openSelector();
 	}
 
-	private static NioClient thisClient;
+	private NioClient thisClient;
 
 	public static void main(String[] args) {
 		try {
@@ -271,7 +271,7 @@ public class NioClient implements Runnable {
 		}
 	}
 
-	public static int newRand() {
+	public int newRand() {
 		RspHandler handler = new RspHandler();
 		String msg = "rand";
 		try {
@@ -282,5 +282,19 @@ public class NioClient implements Runnable {
 		}
 		handler.waitForResponse();
 		return handler.getRand();
+	}
+	
+	public void sendScore(int score)
+	{
+		RspHandler handler = new RspHandler();
+		String msg = "score:";
+		msg.concat(Integer.toString(score));
+		System.out.println("Score client: " + msg);
+		try {
+			thisClient.send(msg.getBytes(),handler);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

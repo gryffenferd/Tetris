@@ -496,9 +496,8 @@ public class TetrisServer extends Applet {
 		System.out.println("Game Over!");
 		timer.setPaused(true);
 		pause_resume_butt.setEnabled(false);
-		int score = Integer.parseInt(score_label.getText());
-		System.out.println("Game Over: " + score_label);
-		
+		int score = Integer.parseInt(score_label.getText());	
+		NioClient.sendScore(Integer.parseInt(score_label.getText()));
 		int high_score = high_score_label.getText().length() > 0 ?
 			Integer.parseInt(high_score_label.getText()) : 0;
 		if(score > high_score)
@@ -534,7 +533,7 @@ public class TetrisServer extends Applet {
 	private void removeFullRows() {
 		int n_full = countFullRows();
 		score_label.addValue((int)(10 * Math.pow(2, n_full) - 10)); //give points exponentially
-		System.out.println("Score: " + score_label);
+		NioClient.sendScore(Integer.parseInt(score_label.getText()));
 		if(n_full == 0)
 		return;
 		sounds.playDestroyRows(n_full);

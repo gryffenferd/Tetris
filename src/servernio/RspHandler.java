@@ -18,10 +18,9 @@ public class RspHandler {
 			}
 		}
 		
-		if(rsp.getClass().equals(String.class))
-			System.out.println(new String(this.rsp));
-		else{
-			setRand(Integer.parseInt(new String(this.rsp)));
+		if(new String(this.rsp).contains("rand")){
+			String rspMessage = new String(this.rsp);
+			setRand(Splitter.splitInt(rspMessage));
 		}
 	}
 

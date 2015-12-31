@@ -20,6 +20,7 @@ public class EchoServer {
 	private Selector selector;
 	private ServerSocketChannel server;
 	private final int port;
+	private int score;
 
 	public EchoServer() {
 		this(DEFAULT_PORT);
@@ -36,7 +37,7 @@ public class EchoServer {
 		InetAddress ia = InetAddress.getLocalHost();
 		InetSocketAddress isa = new InetSocketAddress(ia, this.port);
 		this.server.socket().bind(isa);
-
+		this.score = 0;
 	}
 
 	public void start() throws IOException {
@@ -87,8 +88,12 @@ public class EchoServer {
 		if (msg.trim().equals("rand")){
 			Random random = new Random();
 			int rand = Math.abs(random.nextInt());
-			this.writeMessage(socket,Integer.toString(rand));
+			String rsp = "rand:";
+			this.writeMessage(socket,rsp.concat(Integer.toString(rand)));
 		}
+		else if(msg.trim().equals("score")){
+			
+		}			
 		else if (msg.length() > 0) {
 
 			System.out.println("key is " + evt + " -> " + msg.trim());
