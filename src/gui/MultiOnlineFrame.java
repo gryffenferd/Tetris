@@ -13,19 +13,17 @@ public class MultiOnlineFrame extends Frame implements Runnable {
 	private int rand;
 	private static Random random = new Random();
 	private NioClient client;
+	private int id;
 	
-	public MultiOnlineFrame(){
-		this.client = null;
-	}
-	
-	public MultiOnlineFrame(NioClient client){
+	public MultiOnlineFrame(NioClient client,int id){
 		this.client = client;
+		this.id = id;
 		System.out.println("MultiOnline !!!");
 	}
 
 	@Override
 	public void run() {
-		TetrisServer tetris = new TetrisServer();
+		TetrisServer tetris = new TetrisServer(client,id);
 		this.setTitle("Tetris - Multi Mode ");
 		this.setLocation(200, 200);
 		this.add(tetris);

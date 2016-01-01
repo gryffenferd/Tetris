@@ -1,7 +1,5 @@
 package servernio;
 
-import gui.SoloFrame;
-
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -12,6 +10,7 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
@@ -20,7 +19,7 @@ public class EchoServer {
 	private Selector selector;
 	private ServerSocketChannel server;
 	private final int port;
-	private int score;
+	private SetupServer setupServer = new SetupServer();
 
 	public EchoServer() {
 		this(DEFAULT_PORT);
@@ -37,7 +36,6 @@ public class EchoServer {
 		InetAddress ia = InetAddress.getLocalHost();
 		InetSocketAddress isa = new InetSocketAddress(ia, this.port);
 		this.server.socket().bind(isa);
-		this.score = 0;
 	}
 
 	public void start() throws IOException {
@@ -79,26 +77,40 @@ public class EchoServer {
 
 	public void doEcho(String evt, SocketChannel socket) throws IOException {
 		String msg = this.readMessage(socket);
-		if (msg.length() <= 0)
-			return;
+		
 		/* Pour quitter */
 		if (msg.trim().equals("quit"))
 			socket.close();
-		/* Demande la prochaine pièce */
-		if (msg.trim().equals("rand")){
+
+		/* Random Piece */
+		if (msg.trim().equals("rand")) {
 			Random random = new Random();
 			int rand = Math.abs(random.nextInt());
-			String rsp = "rand:";
-			this.writeMessage(socket,rsp.concat(Integer.toString(rand)));
+			this.writeMessage(socket, "rand:" + rand);
 		}
-		else if(msg.trim().equals("score")){
+
+		/* Score */
+		else if (msg.trim().indexOf("score:") != -1) {
+			ArrayList<Integer> array = Splitter.splitInts(msg.trim());
+			if (array.get(1) == 0) {
+				setupServer.setScoreJ1(array.get(0));
+			}
+			if (array.get(1) == 1) {
+				setupServer.setScoreJ2(array.get(0));
+			}
 			
-		}			
-		else if (msg.length() > 0) {
-
-			System.out.println("key is " + evt + " -> " + msg.trim());
-
-			this.writeMessage(socket, msg);
+		/* ID */
+		} else if (msg.trim().equals("ID")) {
+			this.writeMessage(socket, "ID:" + setupServer.getID());
+		}
+		
+		/* Commande */
+		else if(msg.trim().contains("Commande")){
+			ArrayList<Integer> touches = Splitter.splitInts(msg.trim());
+			if(touches.get(1) == 0){
+			}
+			if(touches.get(1) == 1){
+			}	
 		}
 	}
 

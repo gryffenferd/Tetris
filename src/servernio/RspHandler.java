@@ -3,6 +3,7 @@ package servernio;
 public class RspHandler {
 	private byte[] rsp = null;
 	private int rand;
+	private int id;
 	
 	public synchronized boolean handleResponse(byte[] rsp) {
 		this.rsp = rsp;
@@ -22,6 +23,10 @@ public class RspHandler {
 			String rspMessage = new String(this.rsp);
 			setRand(Splitter.splitInt(rspMessage));
 		}
+		if(new String(this.rsp).contains("ID")){
+			String rspMessage = new String(this.rsp);
+			setID(Splitter.splitInt(rspMessage));
+		}
 	}
 
 	public int getRand() {
@@ -30,5 +35,13 @@ public class RspHandler {
 	
 	public void setRand(int rand){
 		this.rand = rand;
+	}
+	
+	public int getID(){
+		return this.id;
+	}
+	
+	public void setID(int id){
+		this.id = id;
 	}
 }

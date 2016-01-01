@@ -116,7 +116,7 @@ public class TetrisMainMenu extends javax.swing.JFrame {
     }                                          
 
     private void onlineButtonMouseClicked(java.awt.event.MouseEvent evt) {                                          
-        new MultiOnlineFrame();
+        //new MultiOnlineFrame();
         this.setVisible(false);
     }                                         
 

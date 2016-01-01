@@ -13,10 +13,12 @@ package tetris;
 import java.awt.*;
 import java.applet.*;
 import java.awt.event.*;
+import java.io.IOException;
 import java.net.URL;
 import java.net.MalformedURLException;
 
 import servernio.NioClient;
+import servernio.RspHandler;
 
 
 public class TetrisServer extends Applet {
@@ -120,7 +122,7 @@ public class TetrisServer extends Applet {
 	private GridCanvas next_piece_canvas = new GridCanvas(next_piece_grid, false);
 	private Timer timer;
 	private TetrisPiece cur_piece;
-	private TetrisPiece next_piece = randomPiece();
+	private TetrisPiece next_piece;
 	private TetrisSound sounds;
 	private TetrisLabel rows_deleted_label = new TetrisLabel("0");
 	private TetrisLabel level_label = new TetrisLabel("1");
@@ -458,6 +460,15 @@ public class TetrisServer extends Applet {
 		}
 	}
 
+	private NioClient client;
+	private int id;
+	
+	public TetrisServer(NioClient client, int id) {
+		this.client = client;
+		this.id = id;
+		next_piece = randomPiece();
+	}
+
 	/************************************************
 	 * 												*
 	 * 				END TETRISTIMER CLASS			*
@@ -474,7 +485,7 @@ public class TetrisServer extends Applet {
  * 
  */
 	private TetrisPiece randomPiece() {
-		int rand = NioClient.newRand();
+		int rand = client.newRand();
 		return new TetrisPiece(rand % (PIECE_COLORS.length));
 	}
 	
@@ -497,7 +508,7 @@ public class TetrisServer extends Applet {
 		timer.setPaused(true);
 		pause_resume_butt.setEnabled(false);
 		int score = Integer.parseInt(score_label.getText());	
-		NioClient.sendScore(Integer.parseInt(score_label.getText()));
+		client.sendScore(Integer.parseInt(score_label.getText()),this.id);
 		int high_score = high_score_label.getText().length() > 0 ?
 			Integer.parseInt(high_score_label.getText()) : 0;
 		if(score > high_score)
@@ -533,7 +544,7 @@ public class TetrisServer extends Applet {
 	private void removeFullRows() {
 		int n_full = countFullRows();
 		score_label.addValue((int)(10 * Math.pow(2, n_full) - 10)); //give points exponentially
-		NioClient.sendScore(Integer.parseInt(score_label.getText()));
+		client.sendScore(Integer.parseInt(score_label.getText()),id);
 		if(n_full == 0)
 		return;
 		sounds.playDestroyRows(n_full);
@@ -639,11 +650,18 @@ public class TetrisServer extends Applet {
 			}
 		});
 		
+		/* COMMANDE DU TETRIS */
 		//create key listener for rotating, moving left, moving right
 		KeyListener key_listener = new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				if(timer.isPaused()) //don't do anything if game is paused
 					return;
+				try {
+					client.send(("Commande:" + e.getKeyCode() + ":" + id).getBytes(), new RspHandler());
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				if (e.getKeyCode() == 37 || e.getKeyCode() == 39) { //left or right arrow pressed
 					int dir = e.getKeyCode() == 37 ? -1 : 1;
 					synchronized(timer) {
