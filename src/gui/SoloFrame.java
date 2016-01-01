@@ -6,7 +6,7 @@ import java.awt.event.WindowEvent;
 
 import tetris.Tetris;
 
-public class SoloFrame extends Frame{
+public class SoloFrame extends Frame {
 	
 	public SoloFrame() {
 		Tetris tetris = new Tetris();

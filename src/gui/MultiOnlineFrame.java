@@ -18,7 +18,6 @@ public class MultiOnlineFrame extends Frame implements Runnable {
 	public MultiOnlineFrame(NioClient client,int id){
 		this.client = client;
 		this.id = id;
-		System.out.println("MultiOnline !!!");
 	}
 
 	@Override

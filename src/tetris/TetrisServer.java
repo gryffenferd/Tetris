@@ -129,7 +129,7 @@ public class TetrisServer extends Applet {
 	private TetrisLabel score_label = new TetrisLabel("0");
 	private TetrisLabel high_score_label = new TetrisLabel("");
 	public final Button start_newgame_butt = new TetrisButton("Start");
-	public final Button pause_resume_butt = new TetrisButton("Pause");									
+	//public final Button pause_resume_butt = new TetrisButton("Pause");									
 	
 	//
 	// INNER CLASSES
@@ -506,7 +506,6 @@ public class TetrisServer extends Applet {
 	private void gameOver() {
 		System.out.println("Game Over!");
 		timer.setPaused(true);
-		pause_resume_butt.setEnabled(false);
 		int score = Integer.parseInt(score_label.getText());	
 		client.sendScore(Integer.parseInt(score_label.getText()),this.id);
 		int high_score = high_score_label.getText().length() > 0 ?
@@ -588,21 +587,10 @@ public class TetrisServer extends Applet {
 		timer.start(); // pauses immediately
 	}
 	
-	public void stop() {
-		pauseGame();
-		synchronized(timer){
-			timer.stop();
-		}
-		timer = null;
-	}
-	
 	private void startGame() {
 		timer.setDelay(INITIAL_DELAY);
 		timer.setPaused(false);
 		start_newgame_butt.setLabel("Start New Game");
-		pause_resume_butt.setEnabled(true); // stays enabled from here on
-		pause_resume_butt.setLabel("Pause");
-		pause_resume_butt.validate();
 		sounds.playSoundtrack();
 	}
 	
@@ -616,37 +604,17 @@ public class TetrisServer extends Applet {
 		startGame();
 	}
 	
-	private void pauseGame() {
-		timer.setPaused(true);
-		pause_resume_butt.setLabel("Resume");
-		sounds.stopSoundtrack();
-	}
-	
-	private void resumeGame() {
-		timer.setPaused(false);
-		pause_resume_butt.setLabel("Pause");
-		sounds.playSoundtrack();
-	}
-	
 	public void init() {
 		sounds = new TetrisSound(); // NOTE: Must be initialized after Applet fully constructed!
 		installNewPiece();
 
-		pause_resume_butt.setEnabled(false);
+		//pause_resume_butt.setEnabled(false);
 		start_newgame_butt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				if(start_newgame_butt.getLabel().equals("Start"))
 					startGame();
 				else
 					newGame();
-			}
-		});		
-		pause_resume_butt.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				if(pause_resume_butt.getLabel().equals("Pause"))
-					pauseGame();
-				else
-					resumeGame();
 			}
 		});
 		
@@ -692,14 +660,12 @@ public class TetrisServer extends Applet {
 		// add the key listener to all components that might get focus
 		// so that it'll work regardless of which has focus
 		start_newgame_butt.addKeyListener(key_listener);
-		pause_resume_butt.addKeyListener(key_listener);
 		
 		Panel right_panel = new Panel(new GridLayout(3, 1));	
 		right_panel.setBackground(BACKGROUND_COLOR);
 		
 		Panel control_panel = new Panel();
 		control_panel.add(start_newgame_butt);
-		control_panel.add(pause_resume_butt);
 		control_panel.setBackground(BACKGROUND_COLOR);
 		right_panel.add(control_panel);
 		

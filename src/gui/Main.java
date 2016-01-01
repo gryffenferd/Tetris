@@ -9,12 +9,12 @@ package gui;
  *
  * @author Axel
  */
-public class TetrisMainMenu extends javax.swing.JFrame {
+public class Main extends javax.swing.JFrame {
 
     /**
      * Creates new form TetrisMainMenu
      */
-    public TetrisMainMenu() {
+    public Main() {
         initComponents();
     }
 
@@ -107,17 +107,17 @@ public class TetrisMainMenu extends javax.swing.JFrame {
 
     private void soloButtonMouseClicked(java.awt.event.MouseEvent evt) {                                        
         new SoloFrame();
-        this.setVisible(false);
+        this.dispose();
     }                                       
 
     private void offlineButtonMouseClicked(java.awt.event.MouseEvent evt) {                                           
         new TetrisMulti();
-        this.setVisible(false);
+        this.dispose();
     }                                          
 
     private void onlineButtonMouseClicked(java.awt.event.MouseEvent evt) {                                          
-        //new MultiOnlineFrame();
-        this.setVisible(false);
+        new ParamsServer().setVisible(true);
+        this.dispose();
     }                                         
 
     /**
@@ -137,20 +137,20 @@ public class TetrisMainMenu extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TetrisMainMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TetrisMainMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TetrisMainMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TetrisMainMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TetrisMainMenu().setVisible(true);
+                new Main().setVisible(true);
             }
         });
     }
