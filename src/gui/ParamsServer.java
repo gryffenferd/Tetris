@@ -6,8 +6,11 @@
 package gui;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 import servernio.EchoServer;
+import servernio.NioClient;
 
 /**
  *
@@ -89,11 +92,6 @@ public class ParamsServer extends javax.swing.JFrame {
                 joinMouseClicked(evt);
             }
         });
-        join.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                joinActionPerformed(evt);
-            }
-        });
         getContentPane().add(join);
         join.setBounds(330, 160, 88, 23);
 
@@ -114,65 +112,42 @@ public class ParamsServer extends javax.swing.JFrame {
 
     private void createServerMouseClicked(java.awt.event.MouseEvent evt) {                                          
         // TODO add your handling code here:
-    	this.dispose();
-    	EchoServer server = new EchoServer();
-    	try {
-			server.start();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    	this.setVisible(false);
+    	
+    	new Thread(){
+    		public void run() {
+    			EchoServer.main();
+    		}
+    	}.start();		
+		
+    	int i = 0;
+    	while(i < 1000){
+    		System.out.println(i++);
+    	}
+    	
+    	new Thread(){
+    		public void run() {
+    			NioClient.main("localhost");
+    		}
+    	}.start();
+    	
     }                                         
 
     private void joinMouseClicked(java.awt.event.MouseEvent evt) {                                  
         // TODO add your handling code here:
         System.out.println(ipAddress.getText());
         if(!ipAddress.getText().isEmpty()){
-            System.out.println("Non vide");
+        	
+        	new Thread(){
+        		public void run() {
+        			NioClient.main(ipAddress.getText());
+        		}
+        	}.start();
+        	this.setVisible(false);
         }else{
             error.setVisible(true);
-            System.out.println("vide");
         }
-    }                                 
-
-    private void joinActionPerformed(java.awt.event.ActionEvent evt) {                                     
-        // TODO add your handling code here:
-    }                                    
-
-    /**
-     * @param args the command line arguments
-     */
-   /* public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-       /* try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ParamsServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ParamsServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ParamsServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ParamsServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }*/
-        //</editor-fold>
-
-        /* Create and display the form */
-       /* java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ParamsServer().setVisible(true);
-            }
-        });
-    }*/
+    }                                                                 
 
     // Variables declaration - do not modify                     
     private javax.swing.JButton createServer;

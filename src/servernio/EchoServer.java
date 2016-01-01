@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
-public class EchoServer {
+public class EchoServer{
 	public static final int DEFAULT_PORT = 5555;
 	private Selector selector;
 	private ServerSocketChannel server;
@@ -130,12 +130,12 @@ public class EchoServer {
 		int nBytes = socket.write(buffer);
 	}
 
-	/*public static void main(String args[]) {
+	public static void main() {
 		EchoServer server = new EchoServer();
 		try {
 			server.start();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}*/
+	}
 }

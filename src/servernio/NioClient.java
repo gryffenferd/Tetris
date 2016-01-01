@@ -39,14 +39,18 @@ public class NioClient implements Runnable {
 	// Maps a SocketChannel to a RspHandler
 	private Map rspHandlers = Collections.synchronizedMap(new HashMap());
 
-	private NioClient thisClient;
-	
-	public NioClient(InetAddress hostAddress, int port) throws IOException {
-		this.hostAddress = hostAddress;
+	public NioClient(String string, int port) throws IOException {
+		if(string.equals("localhost")){
+			this.hostAddress = InetAddress.getLocalHost();
+			System.out.println(InetAddress.getLocalHost());
+		}
+		else{
+			this.hostAddress = InetAddress.getByName(string);
+		}
 		this.port = port;
-		this.thisClient = this;
 		this.selector = this.initSelector();
 	}
+
 
 	public void send(byte[] data, RspHandler handler) throws IOException {
 		// Start a new connection
@@ -238,9 +242,9 @@ public class NioClient implements Runnable {
 		return SelectorProvider.provider().openSelector();
 	}
 
-	public static void main(String[] args) {
+	public static void main(String string) {
 		try {
-			NioClient client = new NioClient(InetAddress.getLocalHost(), 5555);
+			NioClient client = new NioClient(string, 5555);
 			Thread t = new Thread(client);
 			t.setDaemon(true);
 			t.start();
