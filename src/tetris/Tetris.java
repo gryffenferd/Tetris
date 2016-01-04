@@ -594,7 +594,7 @@ public class Tetris extends Applet {
 		sounds.playSoundtrack();
 	}
 	
-	private void newGame() {
+	public void newGame() {
 		game_grid.clear();
 		installNewPiece();
 		num_rows_deleted = 0;
