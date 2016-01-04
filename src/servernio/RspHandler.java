@@ -4,6 +4,7 @@ public class RspHandler {
 	private byte[] rsp = null;
 	private int rand;
 	private int id;
+	private boolean ready;
 	
 	public synchronized boolean handleResponse(byte[] rsp) {
 		this.rsp = rsp;
@@ -26,6 +27,22 @@ public class RspHandler {
 		if(new String(this.rsp).contains("ID")){
 			String rspMessage = new String(this.rsp);
 			setID(Splitter.splitInt(rspMessage));
+		}
+		if(new String(this.rsp).contains("ready")){
+			String rspMessage = new String(this.rsp);
+			setReady(Splitter.splitBoolean(rspMessage));
+		}
+	}
+	
+	public boolean getReady(){
+		return ready;
+	}
+	
+	public void setReady(String s){
+		if(s.equals("false"))
+			this.ready = false;
+		else {
+			this.ready = true;
 		}
 	}
 

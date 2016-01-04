@@ -1,9 +1,7 @@
 package servernio;
 
-import gui.MultiOnlineFrame;
-import java.io.BufferedReader;
+import gui.MultiLocalFrame;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -40,17 +38,15 @@ public class NioClient implements Runnable {
 	private Map rspHandlers = Collections.synchronizedMap(new HashMap());
 
 	public NioClient(String string, int port) throws IOException {
-		if(string.equals("localhost")){
+		if (string.equals("localhost")) {
 			this.hostAddress = InetAddress.getLocalHost();
 			System.out.println(InetAddress.getLocalHost());
-		}
-		else{
+		} else {
 			this.hostAddress = InetAddress.getByName(string);
 		}
 		this.port = port;
 		this.selector = this.initSelector();
 	}
-
 
 	public void send(byte[] data, RspHandler handler) throws IOException {
 		// Start a new connection
@@ -249,18 +245,36 @@ public class NioClient implements Runnable {
 			t.setDaemon(true);
 			t.start();
 			RspHandler handler = new RspHandler();
-			
+
 			/* Le client reçoit un ID */
 			String idMsg = "ID";
 			client.send(idMsg.getBytes(), handler);
 			handler.waitForResponse();
-			if(handler.getID() >= 2){
+			if (handler.getID() >= 2) {
 				t.stop();
-				System.out.println("trop de joueur");
+				System.out.println("trop de joueurs");
 				System.exit(0);
 			}
+
+			/*if (handler.getID() == 0) {
+				boolean ready = false;
+				RspHandler handlerReady = new RspHandler();
+				while (!ready) {
+					String data = "ready";
+					client.send(data.getBytes(), handlerReady);
+					handlerReady.waitForResponse();
+					ready = handlerReady.getReady(); 
+				}
+			}
 			
-			MultiOnlineFrame tetris = new MultiOnlineFrame(client,handler.getID());
+			if(handler.getID() == 1) {
+				RspHandler handlerGo = new RspHandler();
+				System.out.println("Je suis arriver, go !!!");
+				client.send(go.getBytes(), handlerGo);
+			}*/
+			
+			MultiLocalFrame tetris = new MultiLocalFrame(client,
+					handler.getID());
 			tetris.setRand();
 			Thread threadTetris = new Thread(tetris);
 			threadTetris.start();
@@ -270,9 +284,9 @@ public class NioClient implements Runnable {
 		}
 	}
 
-	public int newRand() {
+	public int newRand(int joueur, int id) {
 		RspHandler handler = new RspHandler();
-		String msg = "rand";
+		String msg = "rand:" + joueur + ":" + id;
 		try {
 			this.send(msg.getBytes(), handler);
 		} catch (IOException e) {
@@ -282,13 +296,12 @@ public class NioClient implements Runnable {
 		handler.waitForResponse();
 		return handler.getRand();
 	}
-	
-	public void sendScore(int score, int id)
-	{
+
+	public void sendScore(int score, int id) {
 		RspHandler handler = new RspHandler();
-		String msg = "score:"+ score +":" + id;
+		String msg = "score:" + score + ":" + id;
 		try {
-			this.send(msg.getBytes(),handler);
+			this.send(msg.getBytes(), handler);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

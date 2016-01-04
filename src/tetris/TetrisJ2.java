@@ -9,6 +9,7 @@ import java.util.Random;
 import java.net.URL;
 import java.net.MalformedURLException;
 
+import servernio.NioClient;
 import tetris.DoubleBufferedCanvas;
 
 public class TetrisJ2 extends Applet {
@@ -114,14 +115,12 @@ public class TetrisJ2 extends Applet {
 	private GridCanvas next_piece_canvas = new GridCanvas(next_piece_grid, false);
 	private Timer timer;
 	private TetrisPiece cur_piece;
-	private TetrisPiece next_piece = randomPiece();
+	private TetrisPiece next_piece;
 	private TetrisSound sounds;
-	private TetrisLabel rows_deleted_label = new TetrisLabel("0");
-	private TetrisLabel level_label = new TetrisLabel("1");
 	private TetrisLabel score_label = new TetrisLabel("0");
-	private TetrisLabel high_score_label = new TetrisLabel("");
 	public final Button start_newgame_butt = new TetrisButton("Start");
-	public final Button pause_resume_butt = new TetrisButton("Pause");									
+	private NioClient client;
+	private int id;									
 	
 	//
 	// INNER CLASSES
@@ -420,8 +419,16 @@ public class TetrisJ2 extends Applet {
 	// INSTANCE METHODS
 	//
 	
+	private int joueur = 2;
+	
+	public TetrisJ2(NioClient client, int id) {
+		this.client = client;
+		this.id = id;
+		next_piece = randomPiece();
+	}
+
 	private TetrisPiece randomPiece() {
-		int rand = Math.abs(random.nextInt());
+		int rand = client.newRand(joueur, id);
 		return new TetrisPiece(rand % (PIECE_COLORS.length));
 	}
 	
@@ -442,12 +449,7 @@ public class TetrisJ2 extends Applet {
 	private void gameOver() {
 		System.out.println("Game Over!");
 		timer.setPaused(true);
-		pause_resume_butt.setEnabled(false);
 		int score = Integer.parseInt(score_label.getText());
-		int high_score = high_score_label.getText().length() > 0 ?
-			Integer.parseInt(high_score_label.getText()) : 0;
-		if(score > high_score)
-			high_score_label.setText("" + score);
 		sounds.playGameOverSound();
 	}
 	
@@ -484,10 +486,7 @@ public class TetrisJ2 extends Applet {
 		sounds.playDestroyRows(n_full);
 		if(num_rows_deleted / DELETED_ROWS_PER_LEVEL != (num_rows_deleted+n_full) / DELETED_ROWS_PER_LEVEL) {
 			timer.faster();
-			level_label.addValue(n_full / DELETED_ROWS_PER_LEVEL + 1);
-			level_label.repaint();
 		}
-		rows_deleted_label.addValue(n_full);
 		num_rows_deleted += n_full;
 		for(int i=ROWS-1; i>=0; i--)
 			while(rowIsFull(i))
@@ -521,22 +520,12 @@ public class TetrisJ2 extends Applet {
 		});
 		timer.start(); // pauses immediately
 	}
-	
-	public void stop() {
-		pauseGame();
-		synchronized(timer){
-			timer.stop();
-		}
-		timer = null;
-	}
+
 	
 	private void startGame() {
 		timer.setDelay(INITIAL_DELAY);
 		timer.setPaused(false);
 		start_newgame_butt.setLabel("Start New Game");
-		pause_resume_butt.setEnabled(true); // stays enabled from here on
-		pause_resume_butt.setLabel("Pause");
-		pause_resume_butt.validate();
 		sounds.playSoundtrack();
 	}
 	
@@ -544,45 +533,13 @@ public class TetrisJ2 extends Applet {
 		game_grid.clear();
 		installNewPiece();
 		num_rows_deleted = 0;
-		rows_deleted_label.setText("0");
-		level_label.setText("1");
 		score_label.setText("0");
 		startGame();
-	}
-	
-	private void pauseGame() {
-		timer.setPaused(true);
-		pause_resume_butt.setLabel("Resume");
-		sounds.stopSoundtrack();
-	}
-	
-	private void resumeGame() {
-		timer.setPaused(false);
-		pause_resume_butt.setLabel("Pause");
-		sounds.playSoundtrack();
 	}
 	
 	public void init() {
 		sounds = new TetrisSound(); // NOTE: Must be initialized after Applet fully constructed!
 		installNewPiece();
-
-		pause_resume_butt.setEnabled(false);
-		start_newgame_butt.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				if(start_newgame_butt.getLabel().equals("Start"))
-					startGame();
-				else
-					newGame();
-			}
-		});		
-		pause_resume_butt.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				if(pause_resume_butt.getLabel().equals("Pause"))
-					pauseGame();
-				else
-					resumeGame();
-			}
-		});
 		
 		//create key listener for rotating, moving left, moving right
 		KeyListener key_listener = new KeyAdapter() {
@@ -619,7 +576,6 @@ public class TetrisJ2 extends Applet {
 		// add the key listener to all components that might get focus
 		// so that it'll work regardless of which has focus
 		start_newgame_butt.addKeyListener(key_listener);
-		pause_resume_butt.addKeyListener(key_listener);
 		
 		Panel right_panel = new Panel(new GridLayout(3, 1));	
 		right_panel.setBackground(BACKGROUND_COLOR);
@@ -637,10 +593,6 @@ public class TetrisJ2 extends Applet {
 		right_panel.add(tmp);
 		
 		Panel stats_panel = new Panel(new GridLayout(4, 2));
-		stats_panel.add(new TetrisLabel("    Rows Deleted: "));
-		stats_panel.add(rows_deleted_label);
-		stats_panel.add(new TetrisLabel("    Level: "));
-		stats_panel.add(level_label);
 		stats_panel.add(new TetrisLabel("    Score: "));
 		stats_panel.add(score_label);
 		//stats_panel.add(new TetrisLabel("    High Score: "));

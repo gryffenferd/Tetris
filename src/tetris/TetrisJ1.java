@@ -21,7 +21,7 @@ import servernio.NioClient;
 import servernio.RspHandler;
 
 
-public class TetrisServer extends Applet {
+public class TetrisJ1 extends Applet {
 	
 	//
 	// STATIC MEMBERS
@@ -124,12 +124,8 @@ public class TetrisServer extends Applet {
 	private TetrisPiece cur_piece;
 	private TetrisPiece next_piece;
 	private TetrisSound sounds;
-	private TetrisLabel rows_deleted_label = new TetrisLabel("0");
-	private TetrisLabel level_label = new TetrisLabel("1");
 	private TetrisLabel score_label = new TetrisLabel("0");
-	private TetrisLabel high_score_label = new TetrisLabel("");
-	public final Button start_newgame_butt = new TetrisButton("Start");
-	//public final Button pause_resume_butt = new TetrisButton("Pause");									
+	public final Button start_newgame_butt = new TetrisButton("Start");								
 	
 	//
 	// INNER CLASSES
@@ -344,7 +340,7 @@ public class TetrisServer extends Applet {
 	 * 												*
 	 ************************************************/	
 
-	private class GridCanvas extends DoubleBufferedCanvasServer {
+	private class GridCanvas extends DoubleBufferedCanvas {
 		private int grid[][];
 		private boolean paint_background;
 		public GridCanvas(int[][] grid, boolean do_background) {
@@ -462,8 +458,9 @@ public class TetrisServer extends Applet {
 
 	private NioClient client;
 	private int id;
+	private int joueur = 1;
 	
-	public TetrisServer(NioClient client, int id) {
+	public TetrisJ1(NioClient client, int id) {
 		this.client = client;
 		this.id = id;
 		next_piece = randomPiece();
@@ -483,9 +480,10 @@ public class TetrisServer extends Applet {
 /*
  * 			RANDOM PIECE
  * 
- */
+ *
+	*/
 	private TetrisPiece randomPiece() {
-		int rand = client.newRand();
+		int rand = client.newRand(joueur, id);
 		return new TetrisPiece(rand % (PIECE_COLORS.length));
 	}
 	
@@ -508,10 +506,6 @@ public class TetrisServer extends Applet {
 		timer.setPaused(true);
 		int score = Integer.parseInt(score_label.getText());	
 		client.sendScore(Integer.parseInt(score_label.getText()),this.id);
-		int high_score = high_score_label.getText().length() > 0 ?
-			Integer.parseInt(high_score_label.getText()) : 0;
-		if(score > high_score)
-			high_score_label.setText("" + score);
 		sounds.playGameOverSound();
 	}
 	
@@ -549,10 +543,7 @@ public class TetrisServer extends Applet {
 		sounds.playDestroyRows(n_full);
 		if(num_rows_deleted / DELETED_ROWS_PER_LEVEL != (num_rows_deleted+n_full) / DELETED_ROWS_PER_LEVEL) {
 			timer.faster();
-			level_label.addValue(n_full / DELETED_ROWS_PER_LEVEL + 1);
-			level_label.repaint();
 		}
-		rows_deleted_label.addValue(n_full);
 		num_rows_deleted += n_full;
 		for(int i=ROWS-1; i>=0; i--)
 			while(rowIsFull(i))
@@ -587,19 +578,17 @@ public class TetrisServer extends Applet {
 		timer.start(); // pauses immediately
 	}
 	
-	private void startGame() {
+	private void startGame() { 
 		timer.setDelay(INITIAL_DELAY);
 		timer.setPaused(false);
 		start_newgame_butt.setLabel("Start New Game");
 		sounds.playSoundtrack();
 	}
 	
-	private void newGame() {
+	public void newGame() {
 		game_grid.clear();
 		installNewPiece();
 		num_rows_deleted = 0;
-		rows_deleted_label.setText("0");
-		level_label.setText("1");
 		score_label.setText("0");
 		startGame();
 	}
@@ -676,14 +665,8 @@ public class TetrisServer extends Applet {
 		right_panel.add(tmp);
 		
 		Panel stats_panel = new Panel(new GridLayout(4, 2));
-		stats_panel.add(new TetrisLabel("    Rows Deleted: "));
-		stats_panel.add(rows_deleted_label);
-		stats_panel.add(new TetrisLabel("    Level: "));
-		stats_panel.add(level_label);
 		stats_panel.add(new TetrisLabel("    Score: "));
 		stats_panel.add(score_label);
-		stats_panel.add(new TetrisLabel("    High Score: "));
-		stats_panel.add(high_score_label);
 		tmp = new Panel(new BorderLayout());
 		tmp.setBackground(BACKGROUND_COLOR);
 		tmp.add("Center", stats_panel);

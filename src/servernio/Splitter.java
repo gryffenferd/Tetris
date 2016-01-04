@@ -18,5 +18,10 @@ public class Splitter {
 		array.add(Integer.parseInt(tab[2]));
 		return array;		
 	}
+
+	public static String splitBoolean(String s) {
+		String tab[] = s.split(":");		
+		return tab[1];
+	}
 	
 }

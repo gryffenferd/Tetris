@@ -14,13 +14,19 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
-public class EchoServer{
+public class EchoServer {
 	public static final int DEFAULT_PORT = 5555;
 	private Selector selector;
 	private ServerSocketChannel server;
 	private final int port;
 	private SetupServer setupServer = new SetupServer();
+	private int pieceJoueur01 = 0;
+	private int pieceJoueur02 = 0;
+	private int pieceJoueur11 = 0;
+	private int pieceJoueur12 = 0;
 
+	private boolean ready = false;
+	
 	public EchoServer() {
 		this(DEFAULT_PORT);
 	}
@@ -77,15 +83,26 @@ public class EchoServer{
 
 	public void doEcho(String evt, SocketChannel socket) throws IOException {
 		String msg = this.readMessage(socket);
-		
+
 		/* Pour quitter */
 		if (msg.trim().equals("quit"))
 			socket.close();
 
 		/* Random Piece */
-		if (msg.trim().equals("rand")) {
-			Random random = new Random();
-			int rand = Math.abs(random.nextInt());
+		if (msg.trim().indexOf("rand:") != -1) {
+			ArrayList<Integer> array = Splitter.splitInts(msg.trim());
+			int rand = 0;
+			if (array.get(1) == 0) {
+				if (array.get(0) == 1)
+					rand = setupServer.getPiece(pieceJoueur01++);
+				if (array.get(0) == 2)
+					rand = setupServer.getPiece(pieceJoueur02++);
+			}else{
+				if (array.get(0) == 1)
+					rand = setupServer.getPiece(pieceJoueur11++);
+				if (array.get(0) == 2)
+					rand = setupServer.getPiece(pieceJoueur12++);
+			}
 			this.writeMessage(socket, "rand:" + rand);
 		}
 
@@ -98,19 +115,29 @@ public class EchoServer{
 			if (array.get(1) == 1) {
 				setupServer.setScoreJ2(array.get(0));
 			}
-			
+
 		/* ID */
 		} else if (msg.trim().equals("ID")) {
 			this.writeMessage(socket, "ID:" + setupServer.getID());
 		}
+
+		/* Ready */ 
+		else if(msg.trim().equals("ready")){
+			this.writeMessage(socket,"ready:" + ready);
+		}
+		
+		/* Go */
+		else if(msg.trim().equals("go")){
+			this.ready = true;
+		}
 		
 		/* Commande */
-		else if(msg.trim().contains("Commande")){
+		else if (msg.trim().contains("Commande")) {
 			ArrayList<Integer> touches = Splitter.splitInts(msg.trim());
-			if(touches.get(1) == 0){
+			if (touches.get(1) == 0) {
 			}
-			if(touches.get(1) == 1){
-			}	
+			if (touches.get(1) == 1) {
+			}
 		}
 	}
 

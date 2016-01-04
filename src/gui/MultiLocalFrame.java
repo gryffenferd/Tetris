@@ -1,32 +1,39 @@
 package gui;
 
 import java.awt.Frame;
-import java.awt.GridLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Random;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
-import tetris.Tetris;
-import tetris.TetrisJ2;
+import servernio.NioClient;
 import thread.ThreadJoueur1;
 import thread.ThreadJoueur2;
 
 
-public class MultiLocalFrame extends Frame{
+public class MultiLocalFrame extends Frame implements Runnable{
 	
+	private int rand;
+	private static Random random = new Random();
+	private NioClient client;
+	private int id;
 	
+	public MultiLocalFrame(NioClient client,int id){
+		this.client = client;
+		this.id = id;
+	}
 
-	public MultiLocalFrame(){
+	public void run(){
 		final CyclicBarrier barrier = new CyclicBarrier(3);
-		ThreadJoueur1 t1 = new ThreadJoueur1(barrier);
-		ThreadJoueur2 t2 = new ThreadJoueur2(barrier);
+		ThreadJoueur1 t1 = new ThreadJoueur1(barrier,this.client,this.id);
+		ThreadJoueur2 t2 = new ThreadJoueur2(barrier,this.client,this.id);
 		t1.setFrame(this);
 		t2.setFrame(this);
 		t1.start();
 		t2.start();
-		this.setTitle("Tetris - Multiplayer Offline Mode ");
-		this.setLocation(100, 100);
+		this.setTitle("Tetris - Multiplayer Online Mode ");
+		this.setLocation(0, 0);
 		
 
 		this.addWindowListener(new WindowAdapter() {
@@ -35,7 +42,7 @@ public class MultiLocalFrame extends Frame{
 			}
 		});
 
-		this.setSize(1500, 882);
+		this.setSize(1300, 882);
 		this.setResizable(false);
 		this.setVisible(true);
 		this.repaint();
@@ -45,7 +52,14 @@ public class MultiLocalFrame extends Frame{
 		catch (InterruptedException e) {e.printStackTrace();}
 		catch (BrokenBarrierException e) {e.printStackTrace();
 		}
-		System.out.println("C'est lancé");
 		
+	}
+	
+	public int getRand(){
+		return this.rand;
+	}
+	
+	public void setRand(){
+		this.rand = Math.abs(random.nextInt());
 	}
 }

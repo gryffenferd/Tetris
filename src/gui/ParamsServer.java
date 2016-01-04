@@ -120,7 +120,7 @@ public class ParamsServer extends javax.swing.JFrame {
     		}
     	}.start();		
 		
-    	int i = 0;
+    	/*int i = 0;
     	while(i < 1000){
     		System.out.println(i++);
     	}
@@ -129,7 +129,7 @@ public class ParamsServer extends javax.swing.JFrame {
     		public void run() {
     			NioClient.main("localhost");
     		}
-    	}.start();
+    	}.start();*/
     	
     }                                         
 

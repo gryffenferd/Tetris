@@ -111,7 +111,6 @@ public class Main extends javax.swing.JFrame {
     }                                       
 
     private void offlineButtonMouseClicked(java.awt.event.MouseEvent evt) {                                           
-        new TetrisMulti();
         this.dispose();
     }                                          
 
