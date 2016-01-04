@@ -245,7 +245,7 @@ public class NioClient implements Runnable {
 			t.setDaemon(true);
 			t.start();
 			RspHandler handler = new RspHandler();
-
+			
 			/* Le client reçoit un ID */
 			String idMsg = "ID";
 			client.send(idMsg.getBytes(), handler);
@@ -256,22 +256,11 @@ public class NioClient implements Runnable {
 				System.exit(0);
 			}
 
-			/*if (handler.getID() == 0) {
-				boolean ready = false;
-				RspHandler handlerReady = new RspHandler();
-				while (!ready) {
-					String data = "ready";
-					client.send(data.getBytes(), handlerReady);
-					handlerReady.waitForResponse();
-					ready = handlerReady.getReady(); 
-				}
-			}
+			if (handler.getID() == 0)
+				t.wait();
 			
-			if(handler.getID() == 1) {
-				RspHandler handlerGo = new RspHandler();
-				System.out.println("Je suis arriver, go !!!");
-				client.send(go.getBytes(), handlerGo);
-			}*/
+			if(handler.getID() == 1)
+				t.notifyAll();
 			
 			MultiLocalFrame tetris = new MultiLocalFrame(client,
 					handler.getID());
