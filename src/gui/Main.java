@@ -5,12 +5,14 @@
  */
 package gui;
 
+import servernio.EchoServer;
+
 /**
  *
  * @author Axel
  */
 public class Main extends javax.swing.JFrame {
-
+	
     /**
      * Creates new form TetrisMainMenu
      */
@@ -72,7 +74,7 @@ public class Main extends javax.swing.JFrame {
         getContentPane().add(soloButton);
         soloButton.setBounds(240, 80, 110, 23);
 
-        offlineButton.setText("VS Offline");
+        offlineButton.setText("Create Server");
         offlineButton.setMaximumSize(new java.awt.Dimension(55, 25));
         offlineButton.setMinimumSize(new java.awt.Dimension(55, 25));
         offlineButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -83,7 +85,7 @@ public class Main extends javax.swing.JFrame {
         getContentPane().add(offlineButton);
         offlineButton.setBounds(240, 120, 110, 23);
 
-        onlineButton.setText("VS Online");
+        onlineButton.setText("Join Server");
         onlineButton.setMaximumSize(new java.awt.Dimension(55, 25));
         onlineButton.setMinimumSize(new java.awt.Dimension(55, 25));
         onlineButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -110,7 +112,12 @@ public class Main extends javax.swing.JFrame {
         this.dispose();
     }                                       
 
-    private void offlineButtonMouseClicked(java.awt.event.MouseEvent evt) {                                           
+    private void offlineButtonMouseClicked(java.awt.event.MouseEvent evt) {     
+    	new Thread(){
+    		public void run() {
+    			EchoServer.main();
+    		}
+    	}.start();	
         this.dispose();
     }                                          
 

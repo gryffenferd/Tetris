@@ -13,6 +13,7 @@ import java.nio.charset.CharsetDecoder;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.concurrent.CyclicBarrier;
 
 public class EchoServer {
 	public static final int DEFAULT_PORT = 5555;
@@ -26,6 +27,7 @@ public class EchoServer {
 	private int pieceJoueur12 = 0;
 
 	private boolean ready = false;
+	private final Object lock = new Object();
 	
 	public EchoServer() {
 		this(DEFAULT_PORT);
@@ -58,7 +60,6 @@ public class EchoServer {
 				if (!key.isValid())
 					continue;
 				if (key.isAcceptable()) {
-					System.out.println("Key is Acceptable");
 					ServerSocketChannel ssc = (ServerSocketChannel) key
 							.channel();
 					SocketChannel socket = (SocketChannel) ssc.accept();
@@ -123,12 +124,12 @@ public class EchoServer {
 
 		/* Ready */ 
 		else if(msg.trim().equals("ready")){
-			this.writeMessage(socket,"ready:" + ready);
+			this.writeMessage(socket, "ok:" + ready);
 		}
 		
 		/* Go */
 		else if(msg.trim().equals("go")){
-			this.ready = true;
+				this.ready = true;
 		}
 		
 		/* Commande */

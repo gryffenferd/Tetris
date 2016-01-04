@@ -5,11 +5,6 @@
  */
 package gui;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
-import servernio.EchoServer;
 import servernio.NioClient;
 
 /**
@@ -18,11 +13,14 @@ import servernio.NioClient;
  */
 public class ParamsServer extends javax.swing.JFrame {
 
-    /**
+    private static Object lock;
+	/**
      * Creates new form ParamsServer
+	 * @param lock2 
      */
     public ParamsServer() {
         initComponents();
+        this.lock = lock;
     }
 
     /**
@@ -35,8 +33,6 @@ public class ParamsServer extends javax.swing.JFrame {
     private void initComponents() {
 
         titre = new javax.swing.JLabel();
-        createServer = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         ipAddress = new javax.swing.JTextField();
@@ -47,7 +43,7 @@ public class ParamsServer extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Tetris Setup Server");
         setBounds(new java.awt.Rectangle(0, 0, 0, 0));
-        setPreferredSize(new java.awt.Dimension(600, 250));
+        setPreferredSize(new java.awt.Dimension(400, 250));
         setResizable(false);
         getContentPane().setLayout(null);
 
@@ -56,35 +52,20 @@ public class ParamsServer extends javax.swing.JFrame {
         titre.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         titre.setText("Tetris Online");
         getContentPane().add(titre);
-        titre.setBounds(10, 11, 590, 29);
-
-        createServer.setText("Create Local Server");
-        createServer.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                createServerMouseClicked(evt);
-            }
-        });
-        getContentPane().add(createServer);
-        createServer.setBounds(10, 70, 225, 23);
-
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(240, 240, 240));
-        jLabel3.setText("Create Server");
-        getContentPane().add(jLabel3);
-        jLabel3.setBounds(10, 40, 169, 22);
+        titre.setBounds(-40, 10, 480, 29);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(240, 240, 240));
         jLabel1.setText("Join Server");
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(10, 120, 152, 22);
+        jLabel1.setBounds(10, 40, 152, 22);
 
         jLabel2.setForeground(new java.awt.Color(240, 240, 240));
         jLabel2.setText("IP Address:");
         getContentPane().add(jLabel2);
-        jLabel2.setBounds(10, 160, 110, 14);
+        jLabel2.setBounds(10, 70, 110, 14);
         getContentPane().add(ipAddress);
-        ipAddress.setBounds(130, 160, 159, 20);
+        ipAddress.setBounds(130, 60, 159, 30);
 
         join.setText("Join");
         join.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -92,70 +73,91 @@ public class ParamsServer extends javax.swing.JFrame {
                 joinMouseClicked(evt);
             }
         });
+        join.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                joinActionPerformed(evt);
+            }
+        });
         getContentPane().add(join);
-        join.setBounds(330, 160, 88, 23);
+        join.setBounds(10, 100, 88, 23);
 
         error.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         error.setForeground(new java.awt.Color(255, 0, 0));
         error.setText("IP Address Empty");
         error.setVisible(false);
         getContentPane().add(error);
-        error.setBounds(440, 160, 141, 14);
+        error.setBounds(130, 110, 141, 14);
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/tetris_Server.png"))); // NOI18N
-        jLabel4.setPreferredSize(new java.awt.Dimension(600, 337));
+        jLabel4.setPreferredSize(new java.awt.Dimension(600, 200));
         getContentPane().add(jLabel4);
-        jLabel4.setBounds(0, 0, 600, 250);
+        jLabel4.setBounds(0, -20, 600, 260);
 
         pack();
     }// </editor-fold>                        
-
-    private void createServerMouseClicked(java.awt.event.MouseEvent evt) {                                          
-        // TODO add your handling code here:
-    	this.setVisible(false);
-    	
-    	new Thread(){
-    		public void run() {
-    			EchoServer.main();
-    		}
-    	}.start();		
-		
-    	/*int i = 0;
-    	while(i < 1000){
-    		System.out.println(i++);
-    	}
-    	
-    	new Thread(){
-    		public void run() {
-    			NioClient.main("localhost");
-    		}
-    	}.start();*/
-    	
-    }                                         
 
     private void joinMouseClicked(java.awt.event.MouseEvent evt) {                                  
         // TODO add your handling code here:
         System.out.println(ipAddress.getText());
         if(!ipAddress.getText().isEmpty()){
-        	
+
         	new Thread(){
-        		public void run() {
+        		
+				public void run() {
         			NioClient.main(ipAddress.getText());
         		}
         	}.start();
-        	this.setVisible(false);
+        	this.dispose();
         }else{
             error.setVisible(true);
+            System.out.println("vide");
         }
-    }                                                                 
+    }                                 
+
+    private void joinActionPerformed(java.awt.event.ActionEvent evt) {                                     
+        // TODO add your handling code here:
+    }                                    
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(ParamsServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(ParamsServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(ParamsServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(ParamsServer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new ParamsServer().setVisible(true);
+            }
+        });
+    }
 
     // Variables declaration - do not modify                     
-    private javax.swing.JButton createServer;
     private javax.swing.JLabel error;
     private javax.swing.JTextField ipAddress;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JButton join;
     private javax.swing.JLabel titre;

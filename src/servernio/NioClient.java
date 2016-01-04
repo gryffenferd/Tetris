@@ -1,6 +1,7 @@
 package servernio;
 
 import gui.MultiLocalFrame;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -245,7 +246,7 @@ public class NioClient implements Runnable {
 			t.setDaemon(true);
 			t.start();
 			RspHandler handler = new RspHandler();
-			
+
 			/* Le client reçoit un ID */
 			String idMsg = "ID";
 			client.send(idMsg.getBytes(), handler);
@@ -256,12 +257,22 @@ public class NioClient implements Runnable {
 				System.exit(0);
 			}
 
-			if (handler.getID() == 0)
-				t.wait();
-			
-			if(handler.getID() == 1)
-				t.notifyAll();
-			
+			if (handler.getID() == 0) {
+				boolean ready = false;
+				while (!ready) {
+					RspHandler h = new RspHandler();
+					client.send("ready".getBytes(), h);
+					h.waitForResponse();
+					ready = h.getReady();
+				}
+			}
+
+			if (handler.getID() == 1) {
+				RspHandler h = new RspHandler();
+				client.send("go".getBytes(), h);
+			}
+
+			System.out.println("Lancement du Tetris: " + handler.getID());
 			MultiLocalFrame tetris = new MultiLocalFrame(client,
 					handler.getID());
 			tetris.setRand();

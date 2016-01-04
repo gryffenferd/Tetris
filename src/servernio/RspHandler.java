@@ -28,9 +28,8 @@ public class RspHandler {
 			String rspMessage = new String(this.rsp);
 			setID(Splitter.splitInt(rspMessage));
 		}
-		if(new String(this.rsp).contains("ready")){
-			String rspMessage = new String(this.rsp);
-			setReady(Splitter.splitBoolean(rspMessage));
+		if(new String(this.rsp).contains("ok")){
+			setReady(Splitter.splitBoolean(new String(this.rsp)));
 		}
 	}
 	
