@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.MalformedURLException;
 
+import javax.swing.AbstractButton;
+
 import servernio.NioClient;
 import servernio.RspHandler;
 
@@ -125,7 +127,7 @@ public class TetrisJ1 extends Applet {
 	private TetrisPiece next_piece;
 	private TetrisSound sounds;
 	private TetrisLabel score_label = new TetrisLabel("0");
-	public final Button start_newgame_butt = new TetrisButton("Start");								
+	public  Button start_newgame_butt = new TetrisButton("Start");								
 	
 	//
 	// INNER CLASSES
@@ -591,6 +593,8 @@ public class TetrisJ1 extends Applet {
 		num_rows_deleted = 0;
 		score_label.setText("0");
 		startGame();
+		
+		
 	}
 	
 	public void init() {
@@ -657,6 +661,9 @@ public class TetrisJ1 extends Applet {
 		control_panel.add(start_newgame_butt);
 		control_panel.setBackground(BACKGROUND_COLOR);
 		right_panel.add(control_panel);
+
+		
+		
 		
 		Panel tmp = new Panel(new BorderLayout());
 		tmp.add("North", new TetrisLabel("    Next Piece:"));
@@ -679,5 +686,7 @@ public class TetrisJ1 extends Applet {
 		this.setBackground(BACKGROUND_COLOR);
 		this.validate();
 	}
+	
+	
 } // end class Tetris
 

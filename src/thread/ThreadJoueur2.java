@@ -1,7 +1,12 @@
 package thread;
 
+import java.awt.AWTException;
+import java.awt.Button;
 import java.awt.Frame;
 import java.awt.GridLayout;
+import java.awt.Point;
+import java.awt.Robot;
+import java.awt.event.InputEvent;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
@@ -36,6 +41,7 @@ public class ThreadJoueur2 extends Thread{
 		tetris.init();
 		tetris.start();
 		f.setVisible(true);
+		
 		try {
 			this.barrier.await();
 		}
@@ -43,6 +49,13 @@ public class ThreadJoueur2 extends Thread{
 		catch (BrokenBarrierException e) {e.printStackTrace();
 		}
 		tetris.newGame();
+		try {
+			this.click(tetris.start_newgame_butt,1);
+			this.tetris.start_newgame_butt.setVisible(false);
+		} catch (AWTException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 	
 	public Frame getFrame(){
@@ -53,5 +66,14 @@ public class ThreadJoueur2 extends Thread{
 		f=f1;
 	}
 	
+	public void click(Button start_newgame_butt2, int millis) throws AWTException
+	{
+	    Point p = start_newgame_butt2.getLocationOnScreen();
+	    Robot r = new Robot();
+	    r.mouseMove(p.x + start_newgame_butt2.getWidth() / 2, p.y + start_newgame_butt2.getHeight() / 2);
+	    r.mousePress(InputEvent.BUTTON1_MASK);
+	    try { Thread.sleep(millis); } catch (Exception e) {}
+	    r.mouseRelease(InputEvent.BUTTON1_MASK);
+	}
 
 }

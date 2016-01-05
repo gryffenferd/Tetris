@@ -45,14 +45,12 @@ public class MultiLocalFrame extends Frame implements Runnable{
 		this.setSize(1300, 882);
 		this.setResizable(false);
 		this.setVisible(true);
-		this.repaint();
 		try {
 			barrier.await();
 		}
 		catch (InterruptedException e) {e.printStackTrace();}
 		catch (BrokenBarrierException e) {e.printStackTrace();
 		}
-		
 	}
 	
 	public int getRand(){

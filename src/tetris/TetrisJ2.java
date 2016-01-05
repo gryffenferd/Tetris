@@ -618,6 +618,7 @@ public class TetrisJ2 extends Applet {
 		right_panel.setBackground(BACKGROUND_COLOR);
 		
 		Panel control_panel = new Panel();
+		control_panel.add(start_newgame_butt);
 		control_panel.setBackground(BACKGROUND_COLOR);
 		right_panel.add(control_panel);
 		
