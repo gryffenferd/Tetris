@@ -5,6 +5,7 @@ public class RspHandler {
 	private int rand;
 	private int id;
 	private boolean ready;
+	private int touche;
 	
 	public synchronized boolean handleResponse(byte[] rsp) {
 		this.rsp = rsp;
@@ -31,6 +32,17 @@ public class RspHandler {
 		if(new String(this.rsp).contains("ok")){
 			setReady(Splitter.splitBoolean(new String(this.rsp)));
 		}
+		if(new String(this.rsp).contains("commande")){
+			setTouche(Splitter.splitInt(new String(this.rsp)));
+		}
+	}
+	
+	public int getTouche(){
+		return touche;
+	}
+	
+	public void setTouche(int touche){
+		this.touche=touche;
 	}
 	
 	public boolean getReady(){

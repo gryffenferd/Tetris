@@ -6,10 +6,12 @@ import java.awt.*;
 import java.applet.*;
 import java.awt.event.*;
 import java.util.Random;
+import java.io.IOException;
 import java.net.URL;
 import java.net.MalformedURLException;
 
 import servernio.NioClient;
+import servernio.RspHandler;
 import tetris.DoubleBufferedCanvas;
 
 public class TetrisJ2 extends Applet {
@@ -291,6 +293,41 @@ public class TetrisJ2 extends Applet {
 		}
 		public void run() {
 			while(true) {
+				RspHandler handler = new RspHandler();
+				try {
+					/* COMMANDE!! */
+					client.send(("newcommande:"+id).getBytes(), handler);
+					handler.waitForResponse();
+					if(handler.getTouche() == 81 || handler.getTouche() == 68) { //left or right arrow pressed
+					int dir = handler.getTouche() == 81 ? -1 : 1;
+					synchronized(timer) {
+						cur_piece.cut();
+						cur_piece.setX(cur_piece.getX() + dir); // try to move
+						if( ! cur_piece.canPaste())
+							cur_piece.setX(cur_piece.getX() - dir); // undo move
+						cur_piece.paste();
+					}
+					game_grid.repaint();
+				}
+					else if (handler.getTouche() == 90) { //rotate
+						synchronized(timer) {
+							cur_piece.cut();
+							cur_piece.rotate();
+							if( ! cur_piece.canPaste())
+								cur_piece.rotateBack();
+							cur_piece.paste();
+						}
+						game_grid.repaint();
+					}
+					
+					if (handler.getTouche() == 83) { //down arrow pressed; drop piece
+						timer.setFast(true);
+					}
+					
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				try { 
 					sleep(m_fast ? 30 : m_delay); 
 				} catch (Exception e) {}
@@ -581,22 +618,16 @@ public class TetrisJ2 extends Applet {
 		right_panel.setBackground(BACKGROUND_COLOR);
 		
 		Panel control_panel = new Panel();
-		//control_panel.add(start_newgame_butt);
-		//control_panel.add(pause_resume_butt);
 		control_panel.setBackground(BACKGROUND_COLOR);
 		right_panel.add(control_panel);
 		
 		Panel tmp = new Panel(new BorderLayout());
-		//tmp.add("North", new TetrisLabel("    Next Piece:"));
-		//tmp.add("Center", next_piece_canvas);
 		tmp.setBackground(BACKGROUND_COLOR);
 		right_panel.add(tmp);
 		
 		Panel stats_panel = new Panel(new GridLayout(4, 2));
 		stats_panel.add(new TetrisLabel("    Score: "));
 		stats_panel.add(score_label);
-		//stats_panel.add(new TetrisLabel("    High Score: "));
-		//stats_panel.add(high_score_label);
 		tmp = new Panel(new BorderLayout());
 		tmp.setBackground(BACKGROUND_COLOR);
 		tmp.add("Center", stats_panel);

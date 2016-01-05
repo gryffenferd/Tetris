@@ -27,7 +27,14 @@ public class EchoServer {
 	private int pieceJoueur12 = 0;
 
 	private boolean ready = false;
-	private final Object lock = new Object();
+	
+	private ArrayList<Integer> cmdJ1 = new ArrayList<>();
+	private ArrayList<Integer> cmdJ2 = new ArrayList<>();
+	
+	private int counterJ1toServer = 0;
+	private int counterJ2toServer = 0;
+	private int counterServertoJ1 = 0;
+	private int counterServertoJ2 = 0;	
 	
 	public EchoServer() {
 		this(DEFAULT_PORT);
@@ -132,12 +139,34 @@ public class EchoServer {
 				this.ready = true;
 		}
 		
-		/* Commande */
+		/* Commande Joueur->Server */
 		else if (msg.trim().contains("Commande")) {
 			ArrayList<Integer> touches = Splitter.splitInts(msg.trim());
 			if (touches.get(1) == 0) {
+				cmdJ1.add(touches.get(0));
+				counterJ1toServer++;
 			}
 			if (touches.get(1) == 1) {
+				cmdJ2.add(touches.get(0));
+				counterJ2toServer++;
+			}
+		}
+		
+		/* Server -> Joueur */
+		else if (msg.trim().contains("newcommande")){
+			int id = Splitter.splitInt(msg.trim());
+			if(id == 0){
+				if(counterJ1toServer > counterServertoJ2){
+					this.writeMessage(socket, "commande:" + cmdJ1.get(counterServertoJ2++));
+				}else{
+					this.writeMessage(socket, "commande:0");
+				}
+			}else{
+				if(counterJ2toServer > counterServertoJ1){
+					this.writeMessage(socket, "commande:" + cmdJ2.get(counterServertoJ1++));
+				}else{
+					this.writeMessage(socket, "commande:0");
+				}
 			}
 		}
 	}
