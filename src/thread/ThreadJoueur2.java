@@ -51,7 +51,7 @@ public class ThreadJoueur2 extends Thread{
 		tetris.newGame();
 		try {
 			this.click(tetris.start_newgame_butt,1);
-			this.tetris.start_newgame_butt.setVisible(false);
+			this.tetris.start_newgame_butt.setEnabled(false);
 		} catch (AWTException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
