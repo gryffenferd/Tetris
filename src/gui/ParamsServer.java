@@ -12,15 +12,13 @@ import servernio.NioClient;
  * @author Axel
  */
 public class ParamsServer extends javax.swing.JFrame {
-
-    private static Object lock;
+	
 	/**
      * Creates new form ParamsServer
 	 * @param lock2 
      */
     public ParamsServer() {
         initComponents();
-        this.lock = lock;
     }
 
     /**
