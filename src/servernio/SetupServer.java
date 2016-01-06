@@ -8,6 +8,7 @@ public class SetupServer {
 	private int scoreJ2;
 	private int id;
 	private int[] tabPiece = new int[100];
+	
 	private Random random = new Random();
 	
 	public SetupServer(){
@@ -19,9 +20,9 @@ public class SetupServer {
 	
 	private void generatePiece() {
 		// TODO Auto-generated method stub
-		for(int j = 0;j<100;j++){
+		for(int j = 0;j<100;j++)
 			tabPiece[j] = Math.abs(random.nextInt());
-		}
+			
 	}
 
 	public int getPiece(int i){
