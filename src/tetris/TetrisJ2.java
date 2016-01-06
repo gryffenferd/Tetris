@@ -298,7 +298,7 @@ public class TetrisJ2 extends Applet {
 					/* COMMANDE!! */
 					client.send(("newcommande:"+id).getBytes(), handler);
 					handler.waitForResponse();
-					if(handler.getTouche() == 81 || handler.getTouche() == 68) { //left or right arrow pressed
+					if(handler.getTouche() == 37 || handler.getTouche() == 39) { //left or right arrow pressed
 					int dir = handler.getTouche() == 81 ? -1 : 1;
 					synchronized(timer) {
 						cur_piece.cut();
@@ -309,7 +309,7 @@ public class TetrisJ2 extends Applet {
 					}
 					game_grid.repaint();
 				}
-					else if (handler.getTouche() == 90) { //rotate
+					else if (handler.getTouche() == 38) { //rotate
 						synchronized(timer) {
 							cur_piece.cut();
 							cur_piece.rotate();
@@ -320,7 +320,7 @@ public class TetrisJ2 extends Applet {
 						game_grid.repaint();
 					}
 					
-					if (handler.getTouche() == 83) { //down arrow pressed; drop piece
+					if (handler.getTouche() == 40) { //down arrow pressed; drop piece
 						timer.setFast(true);
 					}
 					
