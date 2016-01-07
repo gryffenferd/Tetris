@@ -160,14 +160,14 @@ public class EchoServer {
 			int id = Splitter.splitInt(msg.trim());
 			if(id == 0){
 				if(counterJ2toServer > counterServertoJ1){
-					System.out.println(id + " : " + cmdJ2.get(counterServertoJ2));
+					//System.out.println(id + " : " + cmdJ2.get(counterServertoJ2));
 					this.writeMessage(socket, "commande:" + cmdJ2.get(counterServertoJ1++));
 				}else{
 					this.writeMessage(socket, "commande:0");
 				}
 			}else{
 				if(counterJ1toServer > counterServertoJ2){
-					System.out.println(id + " : " + cmdJ1.get(counterServertoJ1));
+					//System.out.println(id + " : " + cmdJ1.get(counterServertoJ1));
 					this.writeMessage(socket, "commande:" + cmdJ1.get(counterServertoJ2++));
 				}else{
 					this.writeMessage(socket, "commande:0");
