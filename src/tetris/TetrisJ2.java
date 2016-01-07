@@ -666,6 +666,7 @@ public class TetrisJ2 extends Applet {
 					System.out.println("COMMANDE !!!!!!");
 					client.send(("newcommande:" + id).getBytes(), handler);
 					handler.waitForResponse();
+					System.out.println("commande : " + handler.getTouche());
 				if (handler.getTouche() == 37 || handler.getTouche() == 39) { 
 					int dir = handler.getTouche() == 37 ? -1 : 1;
 					synchronized (timer) {
