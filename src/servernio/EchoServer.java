@@ -143,8 +143,6 @@ public class EchoServer {
 		/* Commande Joueur->Server */
 		else if (msg.trim().contains("Commande")) {
 			ArrayList<Integer> touches = Splitter.splitInts(msg.trim());
-
-			System.out.println( "commande: " + touches.get(1) + " : " +  touches.get(0));
 			if (touches.get(1) == 0) {
 				System.out.println(touches.get(1) + " : " + touches.get(0));
 				cmdJ1.add(touches.get(0));

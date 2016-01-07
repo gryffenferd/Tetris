@@ -19,7 +19,7 @@ public class TetrisJ2 extends Applet {
 	//
 
 	private final static int INITIAL_DELAY = 1000;
-	private static final long INITIAL_DELAY2 = 300;
+	private static final long INITIAL_DELAY2 = 100;
 	
 	private final static byte ROWS = 18;
 	private final static byte COLUMNS = 10;
@@ -663,11 +663,11 @@ public class TetrisJ2 extends Applet {
 			while (true) {
 				RspHandler handler = new RspHandler();
 				try {
-					System.out.println("COMMANDE !!!!!!");
 					client.send(("newcommande:" + id).getBytes(), handler);
 					handler.waitForResponse();
-					System.out.println("commande : " + handler.getTouche());
 				if (handler.getTouche() == 37 || handler.getTouche() == 39) { 
+
+					System.out.println("commande : " + handler.getTouche());
 					int dir = handler.getTouche() == 37 ? -1 : 1;
 					synchronized (timer) {
 						cur_piece.cut();
@@ -680,6 +680,8 @@ public class TetrisJ2 extends Applet {
 					}
 					game_grid.repaint();
 				} else if (handler.getTouche() == 38) { // rotate
+
+					System.out.println("commande : " + handler.getTouche());
 					synchronized (timer) {
 						cur_piece.cut();
 						cur_piece.rotate();
@@ -690,7 +692,10 @@ public class TetrisJ2 extends Applet {
 					game_grid.repaint();
 				}
 
-				if (handler.getTouche() == 40) { // down arrow pressed; drop
+				if (handler.getTouche() == 40) { 
+
+					System.out.println("commande : " + handler.getTouche());
+							// down arrow pressed; drop
 													// piece
 					timer.setFast(true);
 				}
