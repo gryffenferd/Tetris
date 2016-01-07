@@ -17,6 +17,8 @@ import java.util.Random;
 import java.net.URL;
 import java.net.MalformedURLException;
 
+import javax.swing.JOptionPane;
+
 import tetris.DoubleBufferedCanvas;
 
 public class Tetris extends Applet {
@@ -503,6 +505,7 @@ public class Tetris extends Applet {
 		if(score > high_score)
 			high_score_label.setText("" + score);
 		sounds.playGameOverSound();
+		JOptionPane.showMessageDialog(this,"Perdu !", "Titre : Jeu fini",JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	private boolean rowIsFull(int row) {

@@ -18,6 +18,7 @@ import java.net.URL;
 import java.net.MalformedURLException;
 
 import javax.swing.AbstractButton;
+import javax.swing.JOptionPane;
 
 import servernio.NioClient;
 import servernio.RspHandler;
@@ -511,11 +512,21 @@ public class TetrisJ1 extends Applet {
 	}
 	
 	private void gameOver() {
-		System.out.println("Game Over!");
+		System.out.println("Jeu fini!");
 		timer.setPaused(true);
 		int score = Integer.parseInt(score_label.getText());	
 		client.sendScore(Integer.parseInt(score_label.getText()),this.id);
 		sounds.playGameOverSound();
+		JOptionPane.showMessageDialog(this,"Perdu !", "Titre : Jeu fini",JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	private void gameOver(int a) {
+		System.out.println("Jeu fini!");
+		timer.setPaused(true);
+		int score = Integer.parseInt(score_label.getText());	
+		client.sendScore(Integer.parseInt(score_label.getText()),this.id);
+		sounds.playGameOverSound();
+		JOptionPane.showMessageDialog(this,"Bravo, tu as gagné !", "Titre : Jeu fini",JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	private boolean rowIsFull(int row) {
