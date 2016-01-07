@@ -661,14 +661,14 @@ public class TetrisJ1 extends Applet {
 		
 		// add the key listener to all components that might get focus
 		// so that it'll work regardless of which has focus
-		this.addKeyListener(key_listener);
+		start_newgame_butt.addKeyListener(key_listener);
 		
 		Panel right_panel = new Panel(new GridLayout(3, 1));	
 		right_panel.setBackground(BACKGROUND_COLOR);
 		
 		Panel control_panel = new Panel();
 		control_panel.add(start_newgame_butt);
-		//start_newgame_butt.setFocusable(true);
+		start_newgame_butt.setFocusable(true);
 		control_panel.setBackground(BACKGROUND_COLOR);
 		right_panel.add(control_panel);
 
