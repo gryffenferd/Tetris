@@ -664,7 +664,7 @@ public class TetrisJ2 extends Applet {
 				RspHandler handler = new RspHandler();
 				try {
 					client.send(("newcommande:" + id).getBytes(), handler);
-				handler.waitForResponse();
+					handler.waitForResponse();
 				if (handler.getTouche() == 37 || handler.getTouche() == 39) { 
 					int dir = handler.getTouche() == 37 ? -1 : 1;
 					synchronized (timer) {
