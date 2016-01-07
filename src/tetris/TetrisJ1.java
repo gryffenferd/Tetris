@@ -315,6 +315,20 @@ public class TetrisJ1 extends Applet {
 		}
 		public void run() {
 			while(true) {
+				RspHandler handler = new RspHandler();
+				try {
+					System.out.println("coucou");
+					client.send("fin".getBytes(), handler);
+					handler.waitForResponse();
+					
+					if(handler.getGameOver())
+						gameOver(0);
+					
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
 				try { 
 					sleep(m_fast ? 30 : m_delay); 
 				} catch (Exception e) {}
@@ -513,6 +527,13 @@ public class TetrisJ1 extends Applet {
 	
 	private void gameOver() {
 		System.out.println("Jeu fini!");
+		RspHandler handler = new RspHandler();
+		try {
+			client.send("gameover".getBytes(), handler);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		timer.setPaused(true);
 		int score = Integer.parseInt(score_label.getText());	
 		client.sendScore(Integer.parseInt(score_label.getText()),this.id);
@@ -526,7 +547,7 @@ public class TetrisJ1 extends Applet {
 		int score = Integer.parseInt(score_label.getText());	
 		client.sendScore(Integer.parseInt(score_label.getText()),this.id);
 		sounds.playGameOverSound();
-		JOptionPane.showMessageDialog(this,"Bravo, tu as gagné !", "Titre : Jeu fini",JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(this,"Bravo, tu as gagné !", "Titre : Jeu fini",JOptionPane.INFORMATION_MESSAGE);			
 	}
 	
 	private boolean rowIsFull(int row) {

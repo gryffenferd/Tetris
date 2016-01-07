@@ -7,6 +7,7 @@ public class RspHandler {
 	private boolean ready;
 	private int touche;
 	private int[] tabPiece = new int[100];
+	private boolean gameOver;
 	
 	public synchronized boolean handleResponse(byte[] rsp) {
 		this.rsp = rsp;
@@ -35,8 +36,20 @@ public class RspHandler {
 		if(new String(this.rsp).contains("commande")){
 			setTouche(Splitter.splitInt(new String(this.rsp)));
 		}
+		if(new String(this.rsp).contains("gameover:")){
+			if(Splitter.splitBoolean(new String(this.rsp)).equals("true"))
+				isGameOver();
+		}
 	}
 	
+	private void isGameOver() {
+		this.gameOver = true;		
+	}
+	
+	public boolean getGameOver(){
+		return gameOver;
+	}
+
 	public int[] getPiece(){
 		return tabPiece;
 	}

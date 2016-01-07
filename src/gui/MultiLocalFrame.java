@@ -3,11 +3,13 @@ package gui;
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.util.Random;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
 import servernio.NioClient;
+import servernio.RspHandler;
 import thread.ThreadJoueur1;
 import thread.ThreadJoueur2;
 
@@ -38,6 +40,13 @@ public class MultiLocalFrame extends Frame implements Runnable{
 
 		this.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
+				RspHandler handler = new RspHandler();
+				try {
+					client.send("quit".getBytes(), handler);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				System.exit(0);
 			}
 		});

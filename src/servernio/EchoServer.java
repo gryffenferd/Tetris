@@ -19,10 +19,8 @@ public class EchoServer {
 	private ServerSocketChannel server;
 	private final int port;
 	private SetupServer setupServer = new SetupServer();
-	private int pieceJoueur01 = 0;
-	private int pieceJoueur02 = 0;
-	private int pieceJoueur11 = 0;
-	private int pieceJoueur12 = 0;
+	
+	private boolean gameOver = false;
 
 	private boolean ready = false;
 	
@@ -96,25 +94,22 @@ public class EchoServer {
 
 		/* Random Piece */
 		if (msg.trim().indexOf("rand:") != -1) {
-			/*ArrayList<Integer> array = Splitter.splitInts(msg.trim());
-			int rand = 0;
-			if (array.get(1) == 0) {
-				if (array.get(0) == 1)
-					rand = setupServer.getPiece(pieceJoueur01++);
-				if (array.get(0) == 2)
-					rand = setupServer.getPiece(pieceJoueur02++);
-			}else{
-				if (array.get(0) == 1)
-					rand = setupServer.getPiece(pieceJoueur11++);
-				if (array.get(0) == 2)
-					rand = setupServer.getPiece(pieceJoueur12++);
-			}*/
 			String rand = "rand";
 			for (int i = 0; i < 100 ; i++)
 				rand = rand + ":" + setupServer.getPiece(i);
 			this.writeMessage(socket, rand);
 		}
+		
+		/* Game Over */
+		if(msg.trim().equals("gameover")){
+			this.gameOver = true;
+		}
 
+		/* Fin ? */
+		if(msg.trim().equals("fin")){
+			this.writeMessage(socket, "gameover:" + gameOver);
+		}
+		
 		/* Score */
 		else if (msg.trim().indexOf("score:") != -1) {
 			ArrayList<Integer> array = Splitter.splitInts(msg.trim());
@@ -160,14 +155,12 @@ public class EchoServer {
 			int id = Splitter.splitInt(msg.trim());
 			if(id == 0){
 				if(counterJ2toServer > counterServertoJ1){
-					//System.out.println(id + " : " + cmdJ2.get(counterServertoJ2));
 					this.writeMessage(socket, "commande:" + cmdJ2.get(counterServertoJ1++));
 				}else{
 					this.writeMessage(socket, "commande:0");
 				}
 			}else{
 				if(counterJ1toServer > counterServertoJ2){
-					//System.out.println(id + " : " + cmdJ1.get(counterServertoJ1));
 					this.writeMessage(socket, "commande:" + cmdJ1.get(counterServertoJ2++));
 				}else{
 					this.writeMessage(socket, "commande:0");
