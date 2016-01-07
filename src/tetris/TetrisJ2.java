@@ -19,7 +19,7 @@ public class TetrisJ2 extends Applet {
 	//
 
 	private final static int INITIAL_DELAY = 1000;
-	private static final long INITIAL_DELAY2 = 100;
+	private static final long INITIAL_DELAY2 = 300;
 	
 	private final static byte ROWS = 18;
 	private final static byte COLUMNS = 10;

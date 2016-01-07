@@ -150,7 +150,7 @@ public class EchoServer {
 				cmdJ1.add(touches.get(0));
 				counterJ1toServer++;
 			}
-			if (touches.get(1) == 1) {
+			else {
 				System.out.println(touches.get(1) + " : " + touches.get(0));
 				cmdJ2.add(touches.get(0));
 				counterJ2toServer++;
@@ -162,16 +162,20 @@ public class EchoServer {
 			int id = Splitter.splitInt(msg.trim());
 			if(id == 0){
 				if(counterJ2toServer > counterServertoJ1){
+					System.out.println(id + " : " + cmdJ2.get(counterServertoJ2));
 					counterServertoJ1++;
 					this.writeMessage(socket, "commande:" + cmdJ2.get(counterServertoJ2++));
 				}else{
+					System.out.println(id + " : 0");
 					this.writeMessage(socket, "commande:0");
 				}
 			}else{
 				if(counterJ1toServer > counterServertoJ2){
+					System.out.println(id + " : " + cmdJ1.get(counterServertoJ2));
 					counterServertoJ2++;
 					this.writeMessage(socket, "commande:" + cmdJ1.get(counterServertoJ1++));
 				}else{
+					System.out.println(id + " : 0");
 					this.writeMessage(socket, "commande:0");
 				}
 			}
