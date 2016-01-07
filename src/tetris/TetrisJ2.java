@@ -656,7 +656,6 @@ public class TetrisJ2 extends Applet {
 		public void run() {
 			while (true) {
 				RspHandler handler = new RspHandler();
-				System.out.println("TIMER 2 !!!");
 				try {
 					client.send(("newcommande:" + id).getBytes(), handler);
 				handler.waitForResponse();
