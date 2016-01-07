@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.MalformedURLException;
 
+import javax.swing.JOptionPane;
+
 import servernio.NioClient;
 import servernio.RspHandler;
 import tetris.DoubleBufferedCanvas;
@@ -309,6 +311,19 @@ public class TetrisJ2 extends Applet {
 
 		public void run() {
 			while(true) {
+				RspHandler handler = new RspHandler();
+				try {
+					System.out.println("coucou");
+					client.send("fin".getBytes(), handler);
+					handler.waitForResponse();
+					
+					if(handler.getGameOver())
+						gameOver(0);
+					
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				try { 
 					sleep(m_fast ? 30 : m_delay); 
 				} catch (Exception e) {}
@@ -480,11 +495,28 @@ public class TetrisJ2 extends Applet {
 	}
 
 	private void gameOver() {
-		System.out.println("Game Over!");
-		counterPiece = 0;
+		System.out.println("Jeu fini!");
+		RspHandler handler = new RspHandler();
+		try {
+			client.send("gameover".getBytes(), handler);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		timer.setPaused(true);
-		int score = Integer.parseInt(score_label.getText());
+		int score = Integer.parseInt(score_label.getText());	
+		client.sendScore(Integer.parseInt(score_label.getText()),this.id);
 		sounds.playGameOverSound();
+		JOptionPane.showMessageDialog(this,"L'adversaire a gagné !", "Titre : Jeu fini",JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	private void gameOver(int a) {
+		System.out.println("Jeu fini!");
+		timer.setPaused(true);
+		int score = Integer.parseInt(score_label.getText());	
+		client.sendScore(Integer.parseInt(score_label.getText()),this.id);
+		sounds.playGameOverSound();
+		JOptionPane.showMessageDialog(this,"Ton adversaire est mort !", "Titre : Jeu fini",JOptionPane.INFORMATION_MESSAGE);			
 	}
 
 	private boolean rowIsFull(int row) {
