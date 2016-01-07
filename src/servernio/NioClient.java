@@ -284,7 +284,7 @@ public class NioClient implements Runnable {
 		}
 	}
 
-	public int newRand(int joueur, int id) {
+	public int[] newRand(int joueur, int id) {
 		RspHandler handler = new RspHandler();
 		String msg = "rand:" + joueur + ":" + id;
 		try {
@@ -294,7 +294,7 @@ public class NioClient implements Runnable {
 			e.printStackTrace();
 		}
 		handler.waitForResponse();
-		return handler.getRand();
+		return handler.getPiece();
 	}
 
 	public void sendScore(int score, int id) {

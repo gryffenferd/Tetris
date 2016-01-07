@@ -12,8 +12,6 @@ import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Random;
-import java.util.concurrent.CyclicBarrier;
 
 public class EchoServer {
 	public static final int DEFAULT_PORT = 5555;
@@ -98,7 +96,7 @@ public class EchoServer {
 
 		/* Random Piece */
 		if (msg.trim().indexOf("rand:") != -1) {
-			ArrayList<Integer> array = Splitter.splitInts(msg.trim());
+			/*ArrayList<Integer> array = Splitter.splitInts(msg.trim());
 			int rand = 0;
 			if (array.get(1) == 0) {
 				if (array.get(0) == 1)
@@ -110,8 +108,11 @@ public class EchoServer {
 					rand = setupServer.getPiece(pieceJoueur11++);
 				if (array.get(0) == 2)
 					rand = setupServer.getPiece(pieceJoueur12++);
-			}
-			this.writeMessage(socket, "rand:" + rand);
+			}*/
+			String rand = "rand";
+			for (int i = 0; i < 100 ; i++)
+				rand = rand + ":" + setupServer.getPiece(i);
+			this.writeMessage(socket, rand);
 		}
 
 		/* Score */

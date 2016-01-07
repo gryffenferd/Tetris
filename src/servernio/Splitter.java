@@ -22,4 +22,12 @@ public class Splitter {
 		return tab[1];
 	}
 	
+	public static int[] splitPiece(String s){
+		String tab[] = s.split(":");
+		int[] rsp = new int[100];
+		for(int i = 0, j = 1; i<100;i++,j++)
+			rsp[i] = Integer.parseInt(tab[j]);
+		return rsp;
+	}
+	
 }

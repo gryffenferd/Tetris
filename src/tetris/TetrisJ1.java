@@ -461,11 +461,18 @@ public class TetrisJ1 extends Applet {
 	private NioClient client;
 	private int id;
 	private int joueur = 1;
+	private int[] tabPiece = new int[100];	
+	private int counterPiece = 0;
 	
 	public TetrisJ1(NioClient client, int id) {
 		this.client = client;
 		this.id = id;
-		next_piece = randomPiece();
+		generatePiece();
+	}
+	
+	private void generatePiece(){
+		tabPiece = client.newRand(joueur,id);
+		next_piece = randomPiece();				
 	}
 
 	/************************************************
@@ -485,7 +492,7 @@ public class TetrisJ1 extends Applet {
  *
 	*/
 	private TetrisPiece randomPiece() {
-		int rand = client.newRand(joueur, id);
+		int rand = tabPiece[counterPiece++];
 		return new TetrisPiece(rand % (PIECE_COLORS.length));
 	}
 	
@@ -581,6 +588,7 @@ public class TetrisJ1 extends Applet {
 	}
 	
 	private void startGame() { 
+		counterPiece = 0;
 		timer.setDelay(INITIAL_DELAY);
 		timer.setPaused(false);
 		start_newgame_butt.setLabel("Start New Game");
@@ -588,6 +596,7 @@ public class TetrisJ1 extends Applet {
 	}
 	
 	public void newGame() {
+		counterPiece = 0;
 		game_grid.clear();
 		installNewPiece();
 		num_rows_deleted = 0;

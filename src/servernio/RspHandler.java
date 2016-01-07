@@ -6,6 +6,7 @@ public class RspHandler {
 	private int id;
 	private boolean ready;
 	private int touche;
+	private int[] tabPiece = new int[100];
 	
 	public synchronized boolean handleResponse(byte[] rsp) {
 		this.rsp = rsp;
@@ -22,8 +23,7 @@ public class RspHandler {
 		}
 		
 		if(new String(this.rsp).contains("rand")){
-			String rspMessage = new String(this.rsp);
-			setRand(Splitter.splitInt(rspMessage));
+			setPiece(Splitter.splitPiece(new String(this.rsp)));
 		}
 		if(new String(this.rsp).contains("ID")){
 			String rspMessage = new String(this.rsp);
@@ -35,6 +35,14 @@ public class RspHandler {
 		if(new String(this.rsp).contains("commande")){
 			setTouche(Splitter.splitInt(new String(this.rsp)));
 		}
+	}
+	
+	public int[] getPiece(){
+		return tabPiece;
+	}
+	
+	public void setPiece(int[] tabPiece){
+		this.tabPiece = tabPiece;
 	}
 	
 	public int getTouche(){

@@ -457,15 +457,23 @@ public class TetrisJ2 extends Applet {
 	//
 	
 	private int joueur = 2;
+	private int[] tabPiece = new int[100];
+	private int counterPiece = 0;
 	
 	public TetrisJ2(NioClient client, int id) {
 		this.client = client;
 		this.id = id;
-		next_piece = randomPiece();
+		generatePiece();
 	}
 
+	
+	private void generatePiece(){
+		tabPiece = client.newRand(joueur,id);
+		next_piece = randomPiece();				
+	}
+	
 	private TetrisPiece randomPiece() {
-		int rand = client.newRand(joueur, id);
+		int rand = tabPiece[counterPiece++];
 		return new TetrisPiece(rand % (PIECE_COLORS.length));
 	}
 	
@@ -485,6 +493,7 @@ public class TetrisJ2 extends Applet {
 	
 	private void gameOver() {
 		System.out.println("Game Over!");
+		counterPiece = 0;
 		timer.setPaused(true);
 		int score = Integer.parseInt(score_label.getText());
 		sounds.playGameOverSound();
@@ -560,6 +569,7 @@ public class TetrisJ2 extends Applet {
 
 	
 	private void startGame() {
+		counterPiece = 0;
 		timer.setDelay(INITIAL_DELAY);
 		timer.setPaused(false);
 		start_newgame_butt.setLabel("Start New Game");
@@ -567,6 +577,7 @@ public class TetrisJ2 extends Applet {
 	}
 	
 	public void newGame() {
+		counterPiece = 0;
 		game_grid.clear();
 		installNewPiece();
 		num_rows_deleted = 0;
