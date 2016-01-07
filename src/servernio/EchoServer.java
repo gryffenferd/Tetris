@@ -166,7 +166,7 @@ public class EchoServer {
 					counterServertoJ1++;
 					this.writeMessage(socket, "commande:" + cmdJ2.get(counterServertoJ2++));
 				}else{
-					System.out.println(id + " : 0");
+					System.out.println(id + " : rien");
 					this.writeMessage(socket, "commande:0");
 				}
 			}else{
@@ -175,7 +175,7 @@ public class EchoServer {
 					counterServertoJ2++;
 					this.writeMessage(socket, "commande:" + cmdJ1.get(counterServertoJ1++));
 				}else{
-					System.out.println(id + " : 0");
+					System.out.println(id + " : rien");
 					this.writeMessage(socket, "commande:0");
 				}
 			}
