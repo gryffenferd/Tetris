@@ -538,7 +538,12 @@ public class TetrisJ1 extends Applet {
 		int score = Integer.parseInt(score_label.getText());	
 		client.sendScore(Integer.parseInt(score_label.getText()),this.id);
 		sounds.playGameOverSound();
-		JOptionPane.showMessageDialog(this,"Perdu !", "Titre : Jeu fini",JOptionPane.INFORMATION_MESSAGE);
+		int option =JOptionPane.showConfirmDialog(this,"Perdu !", "Titre : Jeu fini",JOptionPane.OK_CANCEL_OPTION);
+		if (option == JOptionPane.OK_OPTION){
+			System.exit(0);
+		}else if(option == JOptionPane.CANCEL_OPTION){
+			this.gameOver();
+		}
 	}
 	
 	private void gameOver(int a) {
@@ -547,7 +552,12 @@ public class TetrisJ1 extends Applet {
 		int score = Integer.parseInt(score_label.getText());	
 		client.sendScore(Integer.parseInt(score_label.getText()),this.id);
 		sounds.playGameOverSound();
-		JOptionPane.showMessageDialog(this,"Bravo, tu as gagné !", "Titre : Jeu fini",JOptionPane.INFORMATION_MESSAGE);			
+		int option = JOptionPane.showConfirmDialog(this,"Bravo, tu as gagné !", "Titre : Jeu fini",JOptionPane.OK_CANCEL_OPTION);	
+		if (option == JOptionPane.OK_OPTION){
+			System.exit(0);
+		}else if(option == JOptionPane.CANCEL_OPTION){
+			this.gameOver(1);
+		}
 	}
 	
 	private boolean rowIsFull(int row) {

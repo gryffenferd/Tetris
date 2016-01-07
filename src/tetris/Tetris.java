@@ -505,7 +505,12 @@ public class Tetris extends Applet {
 		if(score > high_score)
 			high_score_label.setText("" + score);
 		sounds.playGameOverSound();
-		JOptionPane.showMessageDialog(this,"Perdu !", "Titre : Jeu fini",JOptionPane.INFORMATION_MESSAGE);
+		int option =JOptionPane.showConfirmDialog(this,"Perdu !", "Titre : Jeu fini",JOptionPane.OK_CANCEL_OPTION);
+		if (option == JOptionPane.OK_OPTION){
+			System.exit(0);
+		}else if(option == JOptionPane.CANCEL_OPTION){
+			this.gameOver();
+		}
 	}
 	
 	private boolean rowIsFull(int row) {
