@@ -631,6 +631,12 @@ public class TetrisJ2 extends Applet {
 		Panel tmp = new Panel(new BorderLayout());
 		tmp.setBackground(BACKGROUND_COLOR);
 		right_panel.add(tmp);
+		
+		tmp = new Panel(new BorderLayout());
+		tmp.add("North", new TetrisLabel("    Next Piece:"));
+		tmp.add("Center", next_piece_canvas);
+		tmp.setBackground(BACKGROUND_COLOR);
+		right_panel.add(tmp);
 
 		Panel stats_panel = new Panel(new GridLayout(4, 2));
 		stats_panel.add(new TetrisLabel("    Score: "));

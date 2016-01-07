@@ -671,9 +671,7 @@ public class TetrisJ1 extends Applet {
 		control_panel.setBackground(BACKGROUND_COLOR);
 		right_panel.add(control_panel);
 
-		
-		
-		
+				
 		Panel tmp = new Panel(new BorderLayout());
 		tmp.add("North", new TetrisLabel("    Next Piece:"));
 		tmp.add("Center", next_piece_canvas);
