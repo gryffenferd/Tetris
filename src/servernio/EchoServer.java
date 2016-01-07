@@ -164,16 +164,14 @@ public class EchoServer {
 					counterServertoJ1++;
 					this.writeMessage(socket, "commande:" + cmdJ2.get(counterServertoJ2++));
 				}else{
-					System.out.println(id + " : rien");
 					this.writeMessage(socket, "commande:0");
 				}
 			}else{
 				if(counterJ1toServer > counterServertoJ2){
-					System.out.println(id + " : " + cmdJ1.get(counterServertoJ2));
+					System.out.println(id + " : " + cmdJ1.get(counterServertoJ1));
 					counterServertoJ2++;
 					this.writeMessage(socket, "commande:" + cmdJ1.get(counterServertoJ1++));
 				}else{
-					System.out.println(id + " : rien");
 					this.writeMessage(socket, "commande:0");
 				}
 			}
