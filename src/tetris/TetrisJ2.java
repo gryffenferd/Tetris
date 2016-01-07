@@ -19,6 +19,8 @@ public class TetrisJ2 extends Applet {
 	//
 
 	private final static int INITIAL_DELAY = 1000;
+	private static final long INITIAL_DELAY2 = 100;
+	
 	private final static byte ROWS = 18;
 	private final static byte COLUMNS = 10;
 	private final static int EMPTY = -1;
@@ -306,61 +308,18 @@ public class TetrisJ2 extends Applet {
 		}
 
 		public void run() {
-			while (true) {
-				RspHandler handler = new RspHandler();
-				try {
-					/* COMMANDE!! */
-					client.send(("newcommande:" + id).getBytes(), handler);
-					handler.waitForResponse();
-					if (handler.getTouche() == 37 || handler.getTouche() == 39) { // left
-																					// or
-																					// right
-																					// arrow
-																					// pressed
-						int dir = handler.getTouche() == 37 ? -1 : 1;
-						synchronized (timer) {
-							cur_piece.cut();
-							cur_piece.setX(cur_piece.getX() + dir); // try to
-																	// move
-							if (!cur_piece.canPaste())
-								cur_piece.setX(cur_piece.getX() - dir); // undo
-																		// move
-							cur_piece.paste();
-						}
-						game_grid.repaint();
-					} else if (handler.getTouche() == 38) { // rotate
-						synchronized (timer) {
-							cur_piece.cut();
-							cur_piece.rotate();
-							if (!cur_piece.canPaste())
-								cur_piece.rotateBack();
-							cur_piece.paste();
-						}
-						game_grid.repaint();
-					}
-
-					if (handler.getTouche() == 40) { // down arrow pressed; drop
-														// piece
-						timer.setFast(true);
-					}
-
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				try {
-					sleep(m_fast ? 30 : m_delay);
-				} catch (Exception e) {
-				}
-				if (m_paused) {
+			while(true) {
+				try { 
+					sleep(m_fast ? 30 : m_delay); 
+				} catch (Exception e) {}
+				if(m_paused) {
 					try {
-						synchronized (this) {
+						synchronized(this) {
 							this.wait();
 						}
-					} catch (InterruptedException ie) {
-					}
+					} catch(InterruptedException ie) {}
 				}
-				synchronized (this) {
+				synchronized(this) {
 					m_cb.actionPerformed(null);
 				}
 			}
@@ -597,6 +556,8 @@ public class TetrisJ2 extends Applet {
 			}
 		});
 		timer.start(); // pauses immediately
+		Timer2 timer2 = new Timer2();
+		timer2.start();
 	}
 
 	private void startGame() {
@@ -688,23 +649,55 @@ public class TetrisJ2 extends Applet {
 	}
 
 	private class Timer2 extends Thread {
-		private long m_delay;
-		private ActionListener m_cb;
 
-		public Timer2(long delay, ActionListener cb) {
-			setDelay(delay);
-			m_cb = cb;
-		}
-
-		public void setDelay(long delay) {
-			m_delay = delay;
+		public Timer2() {
 		}
 
 		public void run() {
 			while (true) {
-				m_cb.actionPerformed(null);
-			}
+				RspHandler handler = new RspHandler();
+				System.out.println("TIMER 2 !!!");
+				try {
+					client.send(("newcommande:" + id).getBytes(), handler);
+				handler.waitForResponse();
+				if (handler.getTouche() == 37 || handler.getTouche() == 39) { 
+					int dir = handler.getTouche() == 37 ? -1 : 1;
+					synchronized (timer) {
+						cur_piece.cut();
+						cur_piece.setX(cur_piece.getX() + dir); // try to
+																// move
+						if (!cur_piece.canPaste())
+							cur_piece.setX(cur_piece.getX() - dir); // undo
+																	// move
+						cur_piece.paste();
+					}
+					game_grid.repaint();
+				} else if (handler.getTouche() == 38) { // rotate
+					synchronized (timer) {
+						cur_piece.cut();
+						cur_piece.rotate();
+						if (!cur_piece.canPaste())
+							cur_piece.rotateBack();
+						cur_piece.paste();
+					}
+					game_grid.repaint();
+				}
 
+				if (handler.getTouche() == 40) { // down arrow pressed; drop
+													// piece
+					timer.setFast(true);
+				}
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				try {
+					sleep(INITIAL_DELAY2);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
 	}// end class Timer2
 } // end class Tetris
