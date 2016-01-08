@@ -480,7 +480,7 @@ public class TetrisJ2 extends Applet {
 	}
 
 	private void gameOver() {
-		System.out.println("Game Over!");
+		//System.out.println("Game Over!");
 		counterPiece = 0;
 		timer.setPaused(true);
 		int score = Integer.parseInt(score_label.getText());
@@ -667,7 +667,7 @@ public class TetrisJ2 extends Applet {
 					handler.waitForResponse();
 				if (handler.getTouche() == 37 || handler.getTouche() == 39) { 
 
-					System.out.println("commande : " + handler.getTouche());
+					//System.out.println("commande : " + handler.getTouche());
 					int dir = handler.getTouche() == 37 ? -1 : 1;
 					synchronized (timer) {
 						cur_piece.cut();
@@ -681,7 +681,7 @@ public class TetrisJ2 extends Applet {
 					game_grid.repaint();
 				} else if (handler.getTouche() == 38) { // rotate
 
-					System.out.println("commande : " + handler.getTouche());
+					//System.out.println("commande : " + handler.getTouche());
 					synchronized (timer) {
 						cur_piece.cut();
 						cur_piece.rotate();
@@ -694,7 +694,7 @@ public class TetrisJ2 extends Applet {
 
 				if (handler.getTouche() == 40) { 
 
-					System.out.println("commande : " + handler.getTouche());
+					//System.out.println("commande : " + handler.getTouche());
 							// down arrow pressed; drop
 													// piece
 					timer.setFast(true);

@@ -317,7 +317,7 @@ public class TetrisJ1 extends Applet {
 			while(true) {
 				RspHandler handler = new RspHandler();
 				try {
-					System.out.println("coucou");
+					//System.out.println("coucou");
 					client.send("fin".getBytes(), handler);
 					handler.waitForResponse();
 					
@@ -526,7 +526,7 @@ public class TetrisJ1 extends Applet {
 	}
 	
 	private void gameOver() {
-		System.out.println("Jeu fini!");
+		//System.out.println("Jeu fini!");
 		RspHandler handler = new RspHandler();
 		try {
 			client.send("gameover".getBytes(), handler);
@@ -547,7 +547,7 @@ public class TetrisJ1 extends Applet {
 	}
 	
 	private void gameOver(int a) {
-		System.out.println("Jeu fini!");
+		//System.out.println("Jeu fini!");
 		timer.setPaused(true);
 		int score = Integer.parseInt(score_label.getText());	
 		client.sendScore(Integer.parseInt(score_label.getText()),this.id);

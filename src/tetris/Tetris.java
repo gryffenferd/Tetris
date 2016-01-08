@@ -496,7 +496,7 @@ public class Tetris extends Applet {
 	}
 	
 	private void gameOver() {
-		System.out.println("Game Over!");
+		//System.out.println("Game Over!");
 		timer.setPaused(true);
 		pause_resume_butt.setEnabled(false);
 		int score = Integer.parseInt(score_label.getText());
