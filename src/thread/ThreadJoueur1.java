@@ -48,13 +48,13 @@ public class ThreadJoueur1 extends Thread{
 		}
 		
 		tetris.newGame();
-		try {
+		/*try {
 			this.click(tetris.start_newgame_butt,1);
 			
 		} catch (AWTException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		}
+		}*/
 		
 		
 		

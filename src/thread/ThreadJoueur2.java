@@ -49,13 +49,13 @@ public class ThreadJoueur2 extends Thread{
 		catch (BrokenBarrierException e) {e.printStackTrace();
 		}
 		tetris.newGame();
-		try {
+		/*try {
 			this.click(tetris.start_newgame_butt,1);
 			this.tetris.start_newgame_butt.setVisible(false);
 		} catch (AWTException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		}
+		}*/
 	}
 	
 	public Frame getFrame(){
